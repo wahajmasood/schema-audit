@@ -1,0 +1,12 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Jane Doe",
+  "givenName": "Jane",
+  "familyName": "Doe",
+  "jobTitle": "Software Engineer",
+  "email": "jane@example.com",
+  "telephone": "+1-555-0100",
+  "worksFor": "https://example.com/org/acme",
+  "url": "https://example.com/people/jane"
+}
