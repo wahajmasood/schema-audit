@@ -37,8 +37,13 @@ pattern, and test pattern that all later cycles will extend.
   Given/When/Then scenarios from the spec-delta. Coverage on
   `core/src/`: 99.78% lines, 98.10% branches, 98.39% functions.
 - **Benchmark:** baseline numbers on Node v22.18.0 / linux x64 in
-  `bench/BASELINE.md`. Working target was < 1 ms per validate; we are at
-  2.18 µs (string input) and 1.29 µs (object input).
+  `bench/BASELINE.md`. Working target was < 1 ms per validate. Under
+  best-case micro-benchmark conditions (same input, hot JIT, hot
+  cache, no concurrent load) we measured 2.18 µs/op for string input
+  and 1.29 µs/op for object input. **These are not production
+  throughput guarantees** — see BASELINE.md for what the numbers do
+  and do not support. The production-shaped perf harness lands in
+  cycle 4.
 
 ### Known limitations
 
