@@ -1,6 +1,6 @@
 {
   "schemaVersion": "latest-2026-05",
-  "snapshotAt": "2026-05-15T14:37:13.297Z",
+  "snapshotAt": "2026-05-15T23:25:09.198Z",
   "types": {
     "Thing": {
       "parents": [],
@@ -45,6 +45,611 @@
         "url",
         "image",
         "identifier"
+      ]
+    },
+    "CreativeWork": {
+      "parents": [
+        "Thing"
+      ],
+      "allProperties": {
+        "name": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Thing"
+        },
+        "description": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Thing"
+        },
+        "url": {
+          "valueTypes": [
+            "URL"
+          ],
+          "definedOn": "Thing"
+        },
+        "image": {
+          "valueTypes": [
+            "URL",
+            "ImageObject"
+          ],
+          "definedOn": "Thing"
+        },
+        "identifier": {
+          "valueTypes": [
+            "Text",
+            "URL",
+            "PropertyValue"
+          ],
+          "definedOn": "Thing"
+        },
+        "author": {
+          "valueTypes": [
+            "Person",
+            "Organization"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "datePublished": {
+          "valueTypes": [
+            "Date"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "dateModified": {
+          "valueTypes": [
+            "Date"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "headline": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "publisher": {
+          "valueTypes": [
+            "Organization",
+            "Person"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "about": {
+          "valueTypes": [
+            "Text",
+            "Thing"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "inLanguage": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "CreativeWork"
+        }
+      },
+      "ownProperties": [
+        "author",
+        "datePublished",
+        "dateModified",
+        "headline",
+        "publisher",
+        "about",
+        "inLanguage"
+      ]
+    },
+    "Article": {
+      "parents": [
+        "CreativeWork",
+        "Thing"
+      ],
+      "allProperties": {
+        "name": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Thing"
+        },
+        "description": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Thing"
+        },
+        "url": {
+          "valueTypes": [
+            "URL"
+          ],
+          "definedOn": "Thing"
+        },
+        "image": {
+          "valueTypes": [
+            "URL",
+            "ImageObject"
+          ],
+          "definedOn": "Thing"
+        },
+        "identifier": {
+          "valueTypes": [
+            "Text",
+            "URL",
+            "PropertyValue"
+          ],
+          "definedOn": "Thing"
+        },
+        "author": {
+          "valueTypes": [
+            "Person",
+            "Organization"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "datePublished": {
+          "valueTypes": [
+            "Date"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "dateModified": {
+          "valueTypes": [
+            "Date"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "headline": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "publisher": {
+          "valueTypes": [
+            "Organization",
+            "Person"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "about": {
+          "valueTypes": [
+            "Text",
+            "Thing"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "inLanguage": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "articleBody": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Article"
+        },
+        "articleSection": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Article"
+        },
+        "wordCount": {
+          "valueTypes": [
+            "Integer"
+          ],
+          "definedOn": "Article"
+        }
+      },
+      "ownProperties": [
+        "articleBody",
+        "articleSection",
+        "wordCount"
+      ]
+    },
+    "NewsArticle": {
+      "parents": [
+        "Article",
+        "CreativeWork",
+        "Thing"
+      ],
+      "allProperties": {
+        "name": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Thing"
+        },
+        "description": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Thing"
+        },
+        "url": {
+          "valueTypes": [
+            "URL"
+          ],
+          "definedOn": "Thing"
+        },
+        "image": {
+          "valueTypes": [
+            "URL",
+            "ImageObject"
+          ],
+          "definedOn": "Thing"
+        },
+        "identifier": {
+          "valueTypes": [
+            "Text",
+            "URL",
+            "PropertyValue"
+          ],
+          "definedOn": "Thing"
+        },
+        "author": {
+          "valueTypes": [
+            "Person",
+            "Organization"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "datePublished": {
+          "valueTypes": [
+            "Date"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "dateModified": {
+          "valueTypes": [
+            "Date"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "headline": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "publisher": {
+          "valueTypes": [
+            "Organization",
+            "Person"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "about": {
+          "valueTypes": [
+            "Text",
+            "Thing"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "inLanguage": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "articleBody": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Article"
+        },
+        "articleSection": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Article"
+        },
+        "wordCount": {
+          "valueTypes": [
+            "Integer"
+          ],
+          "definedOn": "Article"
+        },
+        "dateline": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "NewsArticle"
+        },
+        "printSection": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "NewsArticle"
+        }
+      },
+      "ownProperties": [
+        "dateline",
+        "printSection"
+      ]
+    },
+    "BlogPosting": {
+      "parents": [
+        "Article",
+        "CreativeWork",
+        "Thing"
+      ],
+      "allProperties": {
+        "name": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Thing"
+        },
+        "description": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Thing"
+        },
+        "url": {
+          "valueTypes": [
+            "URL"
+          ],
+          "definedOn": "Thing"
+        },
+        "image": {
+          "valueTypes": [
+            "URL",
+            "ImageObject"
+          ],
+          "definedOn": "Thing"
+        },
+        "identifier": {
+          "valueTypes": [
+            "Text",
+            "URL",
+            "PropertyValue"
+          ],
+          "definedOn": "Thing"
+        },
+        "author": {
+          "valueTypes": [
+            "Person",
+            "Organization"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "datePublished": {
+          "valueTypes": [
+            "Date"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "dateModified": {
+          "valueTypes": [
+            "Date"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "headline": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "publisher": {
+          "valueTypes": [
+            "Organization",
+            "Person"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "about": {
+          "valueTypes": [
+            "Text",
+            "Thing"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "inLanguage": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "CreativeWork"
+        },
+        "articleBody": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Article"
+        },
+        "articleSection": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Article"
+        },
+        "wordCount": {
+          "valueTypes": [
+            "Integer"
+          ],
+          "definedOn": "Article"
+        }
+      },
+      "ownProperties": []
+    },
+    "Person": {
+      "parents": [
+        "Thing"
+      ],
+      "allProperties": {
+        "name": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Thing"
+        },
+        "description": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Thing"
+        },
+        "url": {
+          "valueTypes": [
+            "URL"
+          ],
+          "definedOn": "Thing"
+        },
+        "image": {
+          "valueTypes": [
+            "URL",
+            "ImageObject"
+          ],
+          "definedOn": "Thing"
+        },
+        "identifier": {
+          "valueTypes": [
+            "Text",
+            "URL",
+            "PropertyValue"
+          ],
+          "definedOn": "Thing"
+        },
+        "givenName": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Person"
+        },
+        "familyName": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Person"
+        },
+        "jobTitle": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Person"
+        },
+        "email": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Person"
+        },
+        "telephone": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Person"
+        },
+        "worksFor": {
+          "valueTypes": [
+            "Organization"
+          ],
+          "definedOn": "Person"
+        },
+        "affiliation": {
+          "valueTypes": [
+            "Organization"
+          ],
+          "definedOn": "Person"
+        }
+      },
+      "ownProperties": [
+        "givenName",
+        "familyName",
+        "jobTitle",
+        "email",
+        "telephone",
+        "worksFor",
+        "affiliation"
+      ]
+    },
+    "Organization": {
+      "parents": [
+        "Thing"
+      ],
+      "allProperties": {
+        "name": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Thing"
+        },
+        "description": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Thing"
+        },
+        "url": {
+          "valueTypes": [
+            "URL"
+          ],
+          "definedOn": "Thing"
+        },
+        "image": {
+          "valueTypes": [
+            "URL",
+            "ImageObject"
+          ],
+          "definedOn": "Thing"
+        },
+        "identifier": {
+          "valueTypes": [
+            "Text",
+            "URL",
+            "PropertyValue"
+          ],
+          "definedOn": "Thing"
+        },
+        "legalName": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Organization"
+        },
+        "founder": {
+          "valueTypes": [
+            "Person"
+          ],
+          "definedOn": "Organization"
+        },
+        "foundingDate": {
+          "valueTypes": [
+            "Date"
+          ],
+          "definedOn": "Organization"
+        },
+        "email": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Organization"
+        },
+        "telephone": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Organization"
+        },
+        "numberOfEmployees": {
+          "valueTypes": [
+            "Integer"
+          ],
+          "definedOn": "Organization"
+        }
+      },
+      "ownProperties": [
+        "legalName",
+        "founder",
+        "foundingDate",
+        "email",
+        "telephone",
+        "numberOfEmployees"
       ]
     },
     "Product": {
