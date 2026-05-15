@@ -39,6 +39,25 @@ const RESERVED_KEYS = new Set([
   "@base",
 ]);
 
+// Non-URL string primitives. If any of these is among the allowed value-types,
+// a string value could legitimately be one of them (not a URL), so we should
+// NOT force URL validation. Only when URL is among the allowed types AND no
+// non-URL string primitive is, do strings get URL-validated.
+const STRING_NON_URL_PRIMITIVES = new Set([
+  "Text",
+  "Date",
+  "DateTime",
+  "Time",
+]);
+
+function shouldValidateStringAsUrl(valueTypes: string[]): boolean {
+  if (!valueTypes.includes("URL")) return false;
+  for (const t of valueTypes) {
+    if (STRING_NON_URL_PRIMITIVES.has(t)) return false;
+  }
+  return true;
+}
+
 function bucket(issues: Issue[]): {
   errors: Issue[];
   warnings: Issue[];
@@ -143,10 +162,14 @@ export function validateJsonLd(
         ),
       );
 
-      // 5c) URL parseability check, when URL is in the allowed value-types
-      //     and the value is a string. (Object values for URL props are
-      //     covered by the value-type check.)
-      if (propDef.valueTypes.includes("URL") && typeof val === "string") {
+      // 5c) URL parseability check. Only triggers when a string MUST be a
+      //     URL (i.e., URL is allowed AND no non-URL string primitive is).
+      //     E.g., url/image trigger this; identifier (Text|URL|PropertyValue)
+      //     does NOT, because "PROD-123" is a legitimate Text identifier.
+      if (
+        typeof val === "string" &&
+        shouldValidateStringAsUrl(propDef.valueTypes)
+      ) {
         issues.push(...validateUrl(typeValue, key, val));
       }
     }
