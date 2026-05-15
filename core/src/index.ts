@@ -22,7 +22,7 @@ export { ErrorCode } from "./errors.js";
 export type { ErrorCodeName } from "./errors.js";
 
 /** Package version. */
-export const VERSION = "0.1.0";
+export const VERSION = "0.2.0";
 
 /**
  * Validates structured data against schema.org and Google Rich Results rules.

@@ -7,11 +7,14 @@ and zero runtime dependencies. Drop it into any application that needs
 to validate structured data: page auditors, SEO platforms, CMSes,
 content monitors, AI agents.
 
-> **Status — pre-release (v0.1.0).** Cycle 1 ships a JavaScript-only,
-> JSON-LD-only, Layer-1-only (schema.org structural) validator for the
-> `Product` type. Microdata, RDFa, Layer 2 (Google Rich Results required
-> properties), additional schema types, and the Python package land in
-> later cycles. See the roadmap below.
+> **Status — pre-release (v0.2.0).** JavaScript-only, JSON-LD-only,
+> Layer-1-only (schema.org structural) validator. As of v0.2.0 the
+> registry covers `Product`, the `Article` family (`Article`,
+> `NewsArticle`, `BlogPosting`), `Person`, and `Organization` — with
+> their inherited `Thing` and `CreativeWork` properties. Microdata,
+> RDFa, Layer 2 (Google Rich Results required-property checks),
+> additional schema types, and the Python package land in later
+> cycles. See the roadmap below.
 
 ## Install
 
@@ -85,13 +88,16 @@ No network calls. No subprocesses. No fetching remote `@context`s.
 
 ## Cycle 1 scope (this release)
 
-- ✅ JSON-LD validation for **Product** (and its inherited Thing properties)
-- ✅ schema.org **structural** rules (existence, value-type, URL format)
+- ✅ JSON-LD validation for **Product**, **Article**, **NewsArticle**,
+  **BlogPosting**, **Person**, **Organization** (plus their inherited
+  `Thing` and `CreativeWork` properties)
+- ✅ schema.org **structural** rules (existence, value-type, URL format,
+  4-level inheritance chains pre-flattened)
 - ✅ Output-shape contract locked across future JS + Python releases
 - ✅ TypeScript source → dual ESM + CJS + `.d.ts`
-- ⛔ Microdata / RDFa — cycle 6/7
+- ⛔ Microdata / RDFa — cycle 6 / 7
 - ⛔ Google Rich Results required-property checks — cycle 3
-- ⛔ Other schema types beyond Product — cycles 2 onward
+- ⛔ Other schema types beyond the 8 above — cycle 5 (auto-sync)
 - ⛔ Python package — cycle 9
 - ⛔ CLI wrapper — cycle 8
 - ⛔ Auto-sync from schema.org — cycle 5

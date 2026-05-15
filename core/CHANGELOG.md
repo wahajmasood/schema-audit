@@ -5,6 +5,76 @@ documented in this file. The format is based on [Keep a Changelog]
 (https://keepachangelog.com/en/1.1.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] — 2026-05-16
+
+SDD cycle `jsonld-multi-type-l1`. Additive cycle — extends the
+registry from 2 types to 8 with **zero `core/src/` code changes**.
+Demonstrates that the cycle-1 architecture (registry-driven, atomic
+rules, pre-flattened inheritance) scales as data, not code.
+
+### Added
+
+- **6 new schema types** in the registry:
+  - `CreativeWork` (extends `Thing`) — author, datePublished,
+    dateModified, headline, publisher, about, inLanguage
+  - `Article` (extends `CreativeWork`) — articleBody, articleSection,
+    wordCount
+  - `NewsArticle` (extends `Article`) — dateline, printSection.
+    4-level inheritance chain: NewsArticle → Article → CreativeWork
+    → Thing.
+  - `BlogPosting` (extends `Article`) — no own properties; pure
+    inheritance test case.
+  - `Person` (extends `Thing`) — givenName, familyName, jobTitle,
+    email, telephone, worksFor, affiliation
+  - `Organization` (extends `Thing`) — legalName, founder,
+    foundingDate, email, telephone, numberOfEmployees
+- 6 new test fixtures (5 valid + 1 invalid) covering the new types.
+- 13 new tests (6 registry-shape assertions + 7 Given/When/Then
+  scenarios from the spec-delta).
+
+### Changed
+
+- Bundle size: `dist/index.js` grew from ~10 KB to ~22 KB due to the
+  larger inlined registry.
+- Benchmark drift: validate(parsedInput) now 1.40 µs/op (was 1.29 in
+  cycle 1) — a small slowdown from iterating more properties on
+  larger types. Still well within the constitution's working target.
+  See `bench/BASELINE.md` for what this number does and does not
+  support.
+
+### Unchanged (deliberately)
+
+- `core/src/` had no logic changes — only the `VERSION` constant
+  was bumped. The architectural promise that adding types is "data,
+  not code" held.
+- Public API surface, output shape, error codes, atomic-rule
+  contracts: all identical to v0.1.0.
+
+### Test status
+
+- **75 / 75 tests pass.**
+- Coverage on `core/src/`: 99.86% lines, 99.14% branches, 97.97%
+  functions.
+
+### Known limitations (carried from v0.1.0)
+
+- JSON-LD only — Microdata and RDFa in cycles 6 / 7.
+- Layer 2 (Google Rich Results required/recommended-property checks)
+  not yet shipped — cycle 3.
+- `@context` only handled as a string; object/array forms deferred.
+- Multi-typed entities (`@type: ["Article", "BlogPosting"]`) not
+  yet supported.
+- No CLI yet — library only.
+- Schema types beyond the 8 in the registry are not yet covered.
+  Cycle 5 will auto-sync all schema.org types.
+
+### Dependencies
+
+- Runtime: zero.
+- Dev: unchanged from v0.1.0.
+
+[0.2.0]: https://github.com/wahajmasood/schema-audit/releases/tag/v0.2.0
+
 ## [0.1.0] — 2026-05-15
 
 Foundational release — SDD cycle `jsonld-product-l1`. Establishes the
