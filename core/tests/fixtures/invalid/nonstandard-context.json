@@ -1,0 +1,5 @@
+{
+  "@context": "https://example.com/custom-vocab",
+  "@type": "Product",
+  "name": "Nonstandard Context Widget"
+}

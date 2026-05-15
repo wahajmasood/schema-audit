@@ -1,0 +1,11 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Inheritance Test Product",
+  "description": "Exercises Thing-defined properties on a Product instance.",
+  "url": "https://example.com/products/123",
+  "image": "https://example.com/img/123.jpg",
+  "identifier": "PROD-123",
+  "sku": "SKU-789",
+  "brand": "https://example.com/brand/acme"
+}
