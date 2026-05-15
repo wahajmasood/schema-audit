@@ -1,0 +1,26 @@
+{
+  "_comment": "Hand-curated source list of schema.org types for cycle 1. Each type lists ONLY its own properties; build-registry.mjs walks the parent chain and pre-flattens 'allProperties'. Cycle 5 will replace this file with output from sync-schema.mjs (auto-fetch from schemaorg-current-https.jsonld).",
+  "schemaVersion": "latest-2026-05",
+  "types": {
+    "Thing": {
+      "parent": null,
+      "properties": {
+        "name": ["Text"],
+        "description": ["Text"],
+        "url": ["URL"],
+        "image": ["URL", "ImageObject"],
+        "identifier": ["Text", "URL", "PropertyValue"]
+      }
+    },
+    "Product": {
+      "parent": "Thing",
+      "properties": {
+        "brand": ["Brand", "Organization"],
+        "sku": ["Text"],
+        "model": ["Text", "ProductModel"],
+        "gtin": ["Text"],
+        "manufacturer": ["Organization"]
+      }
+    }
+  }
+}

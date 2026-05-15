@@ -1,0 +1,103 @@
+// scripts/build-registry.mjs
+//
+// Builds the validator's registry JSON from the hand-curated source file
+// (`scripts/cycle1-types.json` in cycle 1; replaced by auto-sync output
+// in cycle 5).
+//
+// What this script does:
+//   1. Reads the source file (per-type "own properties" + single parent).
+//   2. Walks each type's parent chain.
+//   3. Pre-flattens the inheritance into:
+//        - parents:        [parent, grand-parent, ..., root]
+//        - allProperties:  { propName: { valueTypes, definedOn } }
+//        - ownProperties:  [propName, ...]
+//   4. Writes the flattened registry to core/registry/schema-types.json
+//      so the JS package can bundle it.
+//
+// Why pre-flatten at build time? Per constitution Design Tenet #4
+// ("Pre-index, don't recurse"), validation must do zero parent-walking
+// at runtime. All inheritance work lives here.
+//
+// Zero dependencies. Pure Node stdlib.
+
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const REPO_ROOT = resolve(__dirname, "..");
+const SOURCE = resolve(__dirname, "cycle1-types.json");
+const OUTPUT = resolve(REPO_ROOT, "core", "registry", "schema-types.json");
+
+const source = JSON.parse(readFileSync(SOURCE, "utf8"));
+
+if (!source.types || typeof source.types !== "object") {
+  throw new Error(`Source file ${SOURCE} is missing "types" map`);
+}
+
+/**
+ * Returns the ancestor chain for a type, immediate parent first, root last.
+ * Throws on inheritance cycle or missing parent reference.
+ */
+function walkParents(typeName, visited = new Set()) {
+  if (visited.has(typeName)) {
+    throw new Error(`Inheritance cycle detected at type: ${typeName}`);
+  }
+  visited.add(typeName);
+
+  const type = source.types[typeName];
+  if (!type) {
+    throw new Error(`Unknown type referenced as parent: ${typeName}`);
+  }
+  if (type.parent == null) return [];
+  return [type.parent, ...walkParents(type.parent, visited)];
+}
+
+/**
+ * Flattens a type's properties by merging the parent chain from root to self.
+ * Self-defined properties override parent-defined ones if names collide
+ * (rare in schema.org, but we honor it deterministically).
+ */
+function flatten(typeName) {
+  const type = source.types[typeName];
+  const parents = walkParents(typeName);
+  const allProperties = {};
+
+  // Walk root → self so later writes override earlier ones.
+  for (const ancestor of [...parents].reverse()) {
+    const ancestorType = source.types[ancestor];
+    for (const [propName, valueTypes] of Object.entries(ancestorType.properties ?? {})) {
+      allProperties[propName] = { valueTypes, definedOn: ancestor };
+    }
+  }
+  for (const [propName, valueTypes] of Object.entries(type.properties ?? {})) {
+    allProperties[propName] = { valueTypes, definedOn: typeName };
+  }
+
+  return {
+    parents,
+    allProperties,
+    ownProperties: Object.keys(type.properties ?? {}),
+  };
+}
+
+const types = {};
+for (const typeName of Object.keys(source.types)) {
+  types[typeName] = flatten(typeName);
+}
+
+const registry = {
+  schemaVersion: source.schemaVersion,
+  snapshotAt: new Date().toISOString(),
+  types,
+};
+
+mkdirSync(dirname(OUTPUT), { recursive: true });
+writeFileSync(OUTPUT, JSON.stringify(registry, null, 2) + "\n");
+
+console.log(`✓ Registry built: ${OUTPUT}`);
+console.log(`  Schema version: ${registry.schemaVersion}`);
+console.log(`  Snapshot:       ${registry.snapshotAt}`);
+console.log(
+  `  Types:          ${Object.keys(types).length} (${Object.keys(types).join(", ")})`,
+);

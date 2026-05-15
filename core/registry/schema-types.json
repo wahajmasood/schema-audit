@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "latest-2026-05",
+  "snapshotAt": "2026-05-15T14:37:13.297Z",
+  "types": {
+    "Thing": {
+      "parents": [],
+      "allProperties": {
+        "name": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Thing"
+        },
+        "description": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Thing"
+        },
+        "url": {
+          "valueTypes": [
+            "URL"
+          ],
+          "definedOn": "Thing"
+        },
+        "image": {
+          "valueTypes": [
+            "URL",
+            "ImageObject"
+          ],
+          "definedOn": "Thing"
+        },
+        "identifier": {
+          "valueTypes": [
+            "Text",
+            "URL",
+            "PropertyValue"
+          ],
+          "definedOn": "Thing"
+        }
+      },
+      "ownProperties": [
+        "name",
+        "description",
+        "url",
+        "image",
+        "identifier"
+      ]
+    },
+    "Product": {
+      "parents": [
+        "Thing"
+      ],
+      "allProperties": {
+        "name": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Thing"
+        },
+        "description": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Thing"
+        },
+        "url": {
+          "valueTypes": [
+            "URL"
+          ],
+          "definedOn": "Thing"
+        },
+        "image": {
+          "valueTypes": [
+            "URL",
+            "ImageObject"
+          ],
+          "definedOn": "Thing"
+        },
+        "identifier": {
+          "valueTypes": [
+            "Text",
+            "URL",
+            "PropertyValue"
+          ],
+          "definedOn": "Thing"
+        },
+        "brand": {
+          "valueTypes": [
+            "Brand",
+            "Organization"
+          ],
+          "definedOn": "Product"
+        },
+        "sku": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Product"
+        },
+        "model": {
+          "valueTypes": [
+            "Text",
+            "ProductModel"
+          ],
+          "definedOn": "Product"
+        },
+        "gtin": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Product"
+        },
+        "manufacturer": {
+          "valueTypes": [
+            "Organization"
+          ],
+          "definedOn": "Product"
+        }
+      },
+      "ownProperties": [
+        "brand",
+        "sku",
+        "model",
+        "gtin",
+        "manufacturer"
+      ]
+    }
+  }
+}
