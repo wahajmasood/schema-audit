@@ -141,3 +141,45 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.obsidian/
+*.swp
+*.swo
+
+# Secrets / certs
+*.pem
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Claude Code local overrides (permissions, not shared)
+.claude/settings.local.json
+
+# SDD / VKF scratch areas
+wip/
+
+# Local SDD/VKF reference template (not part of the repo)
+sdd-vkf-structure/
+
+# Venture protocols & knowledge — kept local, not pushed
+.claude/
+.github/
+.gitattributes
+CLAUDE.md
+ONBOARDING.md
+CHECKLIST.md
+learnings.yaml
+archive/
+backlog/
+changes/
+cohorts/
+docs/
+specs/
