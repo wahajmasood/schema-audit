@@ -49,3 +49,77 @@ test("snapshotAt is a parseable ISO-8601 timestamp", () => {
   const dt = new Date(r.snapshotAt);
   assert.equal(Number.isNaN(dt.getTime()), false);
 });
+
+// ─── cycle 2: multi-type inheritance ────────────────────────────────
+
+test("CreativeWork extends Thing (single-level parents chain)", () => {
+  const def = getTypeDef("CreativeWork");
+  assert.ok(def);
+  assert.deepEqual(def.parents, ["Thing"]);
+  // Owns 7 properties
+  assert.equal(def.ownProperties.length, 7);
+  // headline is own to CreativeWork
+  assert.equal(def.allProperties["headline"]!.definedOn, "CreativeWork");
+  // name is inherited from Thing
+  assert.equal(def.allProperties["name"]!.definedOn, "Thing");
+});
+
+test("Article extends CreativeWork (2-level parents chain)", () => {
+  const def = getTypeDef("Article");
+  assert.ok(def);
+  assert.deepEqual(def.parents, ["CreativeWork", "Thing"]);
+  // Own properties: articleBody, articleSection, wordCount
+  assert.deepEqual(def.ownProperties.sort(), [
+    "articleBody",
+    "articleSection",
+    "wordCount",
+  ]);
+  // articleBody defined on Article
+  assert.equal(def.allProperties["articleBody"]!.definedOn, "Article");
+  // headline inherited from CreativeWork
+  assert.equal(def.allProperties["headline"]!.definedOn, "CreativeWork");
+  // name inherited from Thing
+  assert.equal(def.allProperties["name"]!.definedOn, "Thing");
+});
+
+test("NewsArticle has the 4-level inheritance chain pre-flattened", () => {
+  const def = getTypeDef("NewsArticle");
+  assert.ok(def);
+  assert.deepEqual(def.parents, ["Article", "CreativeWork", "Thing"]);
+  // Own properties: dateline, printSection
+  assert.deepEqual(def.ownProperties.sort(), ["dateline", "printSection"]);
+  // Total: 5 (Thing) + 7 (CreativeWork) + 3 (Article) + 2 (NewsArticle) = 17
+  assert.equal(Object.keys(def.allProperties).length, 17);
+  // Verify a representative property from each ancestor
+  assert.equal(def.allProperties["name"]!.definedOn, "Thing");
+  assert.equal(def.allProperties["headline"]!.definedOn, "CreativeWork");
+  assert.equal(def.allProperties["articleBody"]!.definedOn, "Article");
+  assert.equal(def.allProperties["dateline"]!.definedOn, "NewsArticle");
+});
+
+test("BlogPosting has empty ownProperties (pure-inheritance type)", () => {
+  const def = getTypeDef("BlogPosting");
+  assert.ok(def);
+  assert.deepEqual(def.parents, ["Article", "CreativeWork", "Thing"]);
+  assert.deepEqual(def.ownProperties, []);
+  // 15 inherited properties (5 + 7 + 3 = 15)
+  assert.equal(Object.keys(def.allProperties).length, 15);
+  // headline still resolves through inheritance
+  assert.equal(def.allProperties["headline"]!.definedOn, "CreativeWork");
+});
+
+test("Person extends Thing", () => {
+  const def = getTypeDef("Person");
+  assert.ok(def);
+  assert.deepEqual(def.parents, ["Thing"]);
+  assert.equal(def.allProperties["givenName"]!.definedOn, "Person");
+  assert.equal(def.allProperties["name"]!.definedOn, "Thing");
+});
+
+test("Organization extends Thing", () => {
+  const def = getTypeDef("Organization");
+  assert.ok(def);
+  assert.deepEqual(def.parents, ["Thing"]);
+  assert.equal(def.allProperties["legalName"]!.definedOn, "Organization");
+  assert.equal(def.allProperties["name"]!.definedOn, "Thing");
+});
