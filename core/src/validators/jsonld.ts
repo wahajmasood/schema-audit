@@ -18,6 +18,7 @@ import type {
   ValidateOptions,
 } from "../types.js";
 import { loadRegistry } from "../registry.js";
+import { loadCuratedRules } from "../curated-rules.js";
 import { parseError } from "../errors.js";
 import { validateContext } from "../rules/validate-context.js";
 import { validateType } from "../rules/validate-type.js";
@@ -26,6 +27,7 @@ import { validatePropertyValueType } from "../rules/validate-property-value-type
 import { validateUrl } from "../rules/validate-url.js";
 
 const registry = loadRegistry();
+const curatedRules = loadCuratedRules();
 
 // JSON-LD reserved keys we skip during property iteration.
 const RESERVED_KEYS = new Set([
@@ -90,6 +92,7 @@ function emptyResult(
     registry: {
       schemaVersion: registry.schemaVersion,
       snapshotAt: registry.snapshotAt,
+      curatedRulesVersion: curatedRules.sourceVersion,
     },
   };
 }
@@ -189,6 +192,7 @@ export function validateJsonLd(
     registry: {
       schemaVersion: registry.schemaVersion,
       snapshotAt: registry.snapshotAt,
+      curatedRulesVersion: curatedRules.sourceVersion,
     },
   };
 }

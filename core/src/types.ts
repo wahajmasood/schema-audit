@@ -65,6 +65,11 @@ export interface ValidationResult {
     schemaVersion: string;
     /** ISO-8601 timestamp when the registry was built. */
     snapshotAt: string;
+    /**
+     * The Layer-2 curated-rules snapshot version (Google Rich Results
+     * docs). Added in 0.3.0 to make Layer-2 verdicts auditable.
+     */
+    curatedRulesVersion: string;
   };
 }
 
