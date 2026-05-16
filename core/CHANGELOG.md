@@ -5,6 +5,94 @@ documented in this file. The format is based on [Keep a Changelog]
 (https://keepachangelog.com/en/1.1.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] — 2026-05-16
+
+SDD cycle `jsonld-rich-results-l2`. Adds **Layer 2** — Google Rich
+Results required + recommended-property checks — on top of the
+schema.org structural Layer 1 from cycles 1+2. This is the
+differentiator the constitution promised.
+
+### Added
+
+- **Curated rules file** — `core/registry/curated-rules.json`.
+  Manually maintained from Google's Rich Results documentation per
+  the constitution. Inlined at build time. Provenance:
+  `sourceVersion` + `snapshotAt`.
+- **Two new atomic rules**:
+  - `validateRequired(obj, typeName, required, requiredOneOf)` —
+    handles both simple required and `requiredOneOf` groups.
+  - `validateRecommended(obj, typeName, recommended)` — warning per
+    missing recommended property.
+- **Two new error codes**:
+  - `MISSING_REQUIRED_PROPERTY` (error) — covers simple missing AND
+    unsatisfied `requiredOneOf`. Path is `"<Type>.<prop>"` for
+    simple, `"<Type>"` for oneOf with alternatives named in
+    `message`.
+  - `MISSING_RECOMMENDED_PROPERTY` (warning).
+- **Layer 2 coverage in cycle 3**:
+  - `Product` — required: `name`, `image`; oneOf: `[offers, review,
+    aggregateRating]`; recommended: brand, sku, gtin, description,
+    mpn, audience
+  - `Article`, `NewsArticle`, `BlogPosting` — recommended only
+    (no strict required per current Google docs); see
+    `curated-rules.json` for the per-type set.
+- **Curated-rules loader** — `core/src/curated-rules.ts` mirrors
+  `registry.ts`: `loadCuratedRules()`, `getCuratedRules(name)`.
+  Returns `undefined` for types without entries (Person,
+  Organization, anything else) — orchestrator silently skips
+  Layer 2 for those.
+- **5 new fixtures + 4 new test files** — 37 new test cases.
+
+### Changed
+
+- **`ValidationResult.registry` extended** (additive) with
+  `curatedRulesVersion: string`. Minor version bump per Design
+  Tenet #5.
+- **Product registry expanded** in `scripts/cycle1-types.json` with
+  `offers`, `review`, `aggregateRating`, `mpn`, `audience`. These
+  were missing from cycle 1's hand-curated source; cycle 3 needs
+  them for Layer 2 to reference. Registry now has 15 Product
+  properties (was 10).
+- **Cycle-1 fixtures updated** to satisfy Layer 2 (added `image`
+  and/or `offers` where missing). Post-0.3.0, "valid Product" means
+  satisfying schema.org structural AND Google Rich Results
+  eligibility.
+- **Bundle size:** `dist/index.js` grew from ~22 KB to ~27 KB with
+  the curated-rules JSON inlined.
+- **Bench drift:** `validate(parsedInput)` now 1.79 µs/op (was 1.40
+  in v0.2.0). Layer 2 adds property-presence iteration on types with
+  curated entries. Still well within the constitution's working
+  target. See `bench/BASELINE.md` for what these numbers do and
+  don't support.
+
+### Test status
+
+- **112 / 112 tests pass** (75 → 112; +37 Layer-2 tests).
+- Coverage on `core/src/`: 99.71% lines, 99.07% branches, 97.25%
+  functions.
+
+### Known limitations (carried + new)
+
+- Layer 2 covers 4 types only (Product, Article, NewsArticle,
+  BlogPosting). Person, Organization, Recipe, Event, Review,
+  LocalBusiness, JobPosting, FAQPage, BreadcrumbList, VideoObject,
+  etc. arrive in later cycles.
+- Layer 2 checks property *presence* only. The Offer object's
+  internal shape (price + priceCurrency) is not yet validated —
+  cycle 4 or 5 candidate.
+- Date format validation (`INVALID_DATE_FORMAT`) still deferred —
+  strings continue to pass for Date-typed properties.
+- `@context` only handled as a string; object/array forms still
+  deferred.
+- Microdata / RDFa / Python / CLI / auto-sync — per roadmap.
+
+### Dependencies
+
+- Runtime: zero.
+- Dev: unchanged from v0.2.0.
+
+[0.3.0]: https://github.com/wahajmasood/schema-audit/releases/tag/v0.3.0
+
 ## [0.2.0] — 2026-05-16
 
 SDD cycle `jsonld-multi-type-l1`. Additive cycle — extends the
