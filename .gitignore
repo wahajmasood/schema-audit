@@ -142,6 +142,9 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
 
+# schema.org sync cache (regenerable; ~1.5 MB)
+scripts/.schemaorg-cache.jsonld
+
 # Editor / OS
 .DS_Store
 Thumbs.db
