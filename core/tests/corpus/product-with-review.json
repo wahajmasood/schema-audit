@@ -1,0 +1,9 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Heirloom Rolling Pin",
+  "image": "https://example.com/img/rolling-pin.jpg",
+  "brand": "https://example.com/brands/heartwood",
+  "description": "Hand-turned maple rolling pin from heritage craft workshop.",
+  "review": "https://example.com/reviews/rolling-pin"
+}

@@ -1,0 +1,16 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "The Quiet Power of Atomic Rules",
+  "image": "https://example.com/img/atomic-rules.jpg",
+  "datePublished": "2026-05-16",
+  "dateModified": "2026-05-16",
+  "author": "https://example.com/people/anonymous",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Example Publisher",
+    "legalName": "Example Publishing Co.",
+    "url": "https://example.com/org/example-publisher"
+  },
+  "articleBody": "A pure function for each rule. No shared state. No surprises. Composition is just calling them in order."
+}

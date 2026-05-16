@@ -1,6 +1,6 @@
 {
   "name": "schema-audit",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Zero-dependency schema markup validation engine. Validates JSON-LD, Microdata, and RDFa against schema.org and Google Rich Results rules.",
   "license": "MIT",
   "author": "wahajmasood",
@@ -51,7 +51,10 @@
     "clean": "rm -rf dist",
     "test": "node scripts/run-tests.js",
     "test:coverage": "node scripts/run-tests.js --experimental-test-coverage",
+    "corpus": "node scripts/run-tests.js corpus.test.ts google-truth.test.ts",
+    "corpus:regen": "npm run build && node scripts/regen-corpus-snapshots.mjs",
     "bench": "node bench/bench-jsonld-product.js",
+    "bench:corpus": "node bench/bench-corpus.js",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run clean && npm run build && npm test"
   },

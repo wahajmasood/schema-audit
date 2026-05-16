@@ -1,0 +1,7 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Spartan Stapler",
+  "image": "https://example.com/img/stapler.jpg",
+  "offers": "https://example.com/offers/stapler"
+}

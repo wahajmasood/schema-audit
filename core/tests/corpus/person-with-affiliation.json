@@ -1,0 +1,13 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Priya Patel",
+  "givenName": "Priya",
+  "familyName": "Patel",
+  "jobTitle": "Principal Engineer",
+  "email": "priya@example.com",
+  "telephone": "+1-555-0188",
+  "worksFor": "https://example.com/org/acme",
+  "affiliation": "https://example.com/org/standards-board",
+  "url": "https://example.com/people/priya-patel"
+}

@@ -1,0 +1,9 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Compact Bluetooth Speaker",
+  "image": "https://example.com/img/speaker.jpg",
+  "brand": "https://example.com/brands/soundwave",
+  "sku": "SPK-CMP-01",
+  "aggregateRating": "https://example.com/ratings/speaker"
+}

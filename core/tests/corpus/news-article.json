@@ -1,0 +1,15 @@
+{
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "name": "Tech Industry Adopts Stricter Schema Standards",
+  "headline": "Tech Industry Adopts Stricter Schema Standards",
+  "image": "https://example.com/img/news-hero.jpg",
+  "datePublished": "2026-05-16",
+  "dateModified": "2026-05-16",
+  "dateline": "SAN FRANCISCO",
+  "printSection": "Business",
+  "author": "https://example.com/people/john-smith",
+  "publisher": "https://example.com/org/wire-service",
+  "articleBody": "A coalition of search-and-AI vendors announced a coordinated structured-data validation specification today.",
+  "articleSection": "Technology"
+}

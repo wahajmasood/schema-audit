@@ -1,0 +1,13 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Heartwood Tools",
+  "legalName": "Heartwood Tools, LLC",
+  "founder": "https://example.com/people/anders-heartwood",
+  "foundingDate": "2018-04-12",
+  "email": "hello@heartwood.example",
+  "telephone": "+1-555-0156",
+  "numberOfEmployees": 14,
+  "url": "https://heartwood.example",
+  "description": "Hand-turned wooden kitchen tools made in Vermont."
+}

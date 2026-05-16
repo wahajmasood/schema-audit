@@ -1,0 +1,10 @@
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "name": "Thoughts on Shipping a Validator",
+  "headline": "Thoughts on Shipping a Validator",
+  "image": "https://example.com/img/blog-validator.jpg",
+  "datePublished": "2026-05-16",
+  "author": "https://example.com/people/wahaj",
+  "articleBody": "Today I shipped cycle 4. The corpus harness is the first thing that lets us see regressions before users do."
+}

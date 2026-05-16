@@ -1,0 +1,44 @@
+{
+  "valid": true,
+  "format": "jsonld",
+  "types": [
+    "Product"
+  ],
+  "errors": [],
+  "warnings": [
+    {
+      "type": "warning",
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "path": "Product.gtin",
+      "message": "Recommended property \"gtin\" is missing on type Product (Google Rich Results).",
+      "value": null
+    },
+    {
+      "type": "warning",
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "path": "Product.description",
+      "message": "Recommended property \"description\" is missing on type Product (Google Rich Results).",
+      "value": null
+    },
+    {
+      "type": "warning",
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "path": "Product.mpn",
+      "message": "Recommended property \"mpn\" is missing on type Product (Google Rich Results).",
+      "value": null
+    },
+    {
+      "type": "warning",
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "path": "Product.audience",
+      "message": "Recommended property \"audience\" is missing on type Product (Google Rich Results).",
+      "value": null
+    }
+  ],
+  "info": [],
+  "registry": {
+    "schemaVersion": "<NORMALIZED_SCHEMA_VERSION>",
+    "snapshotAt": "<NORMALIZED_SNAPSHOT_AT>",
+    "curatedRulesVersion": "<NORMALIZED_CURATED_VERSION>"
+  }
+}

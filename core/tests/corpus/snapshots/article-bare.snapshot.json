@@ -1,0 +1,51 @@
+{
+  "valid": true,
+  "format": "jsonld",
+  "types": [
+    "Article"
+  ],
+  "errors": [],
+  "warnings": [
+    {
+      "type": "warning",
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "path": "Article.image",
+      "message": "Recommended property \"image\" is missing on type Article (Google Rich Results).",
+      "value": null
+    },
+    {
+      "type": "warning",
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "path": "Article.datePublished",
+      "message": "Recommended property \"datePublished\" is missing on type Article (Google Rich Results).",
+      "value": null
+    },
+    {
+      "type": "warning",
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "path": "Article.author",
+      "message": "Recommended property \"author\" is missing on type Article (Google Rich Results).",
+      "value": null
+    },
+    {
+      "type": "warning",
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "path": "Article.dateModified",
+      "message": "Recommended property \"dateModified\" is missing on type Article (Google Rich Results).",
+      "value": null
+    },
+    {
+      "type": "warning",
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "path": "Article.publisher",
+      "message": "Recommended property \"publisher\" is missing on type Article (Google Rich Results).",
+      "value": null
+    }
+  ],
+  "info": [],
+  "registry": {
+    "schemaVersion": "<NORMALIZED_SCHEMA_VERSION>",
+    "snapshotAt": "<NORMALIZED_SNAPSHOT_AT>",
+    "curatedRulesVersion": "<NORMALIZED_CURATED_VERSION>"
+  }
+}

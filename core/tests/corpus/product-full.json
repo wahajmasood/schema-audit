@@ -1,0 +1,14 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Aurora Standing Desk",
+  "description": "Adjustable-height standing desk in solid oak.",
+  "url": "https://example.com/products/aurora-desk",
+  "image": "https://example.com/img/aurora-desk.jpg",
+  "brand": "https://example.com/brands/officeplus",
+  "sku": "DESK-AURORA-OAK-60",
+  "gtin": "0734567891234",
+  "mpn": "DSK-OAK-60",
+  "audience": "https://example.com/audience/remote-workers",
+  "offers": "https://example.com/offers/aurora-desk"
+}
