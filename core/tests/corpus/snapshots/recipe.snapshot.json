@@ -1,0 +1,28 @@
+{
+  "valid": false,
+  "format": "jsonld",
+  "types": [
+    "Recipe"
+  ],
+  "errors": [
+    {
+      "type": "error",
+      "code": "INVALID_PROPERTY_VALUE_TYPE",
+      "path": "Recipe.recipeIngredient",
+      "message": "Property \"recipeIngredient\" on type Recipe expects one of [Text, ItemList, PropertyValue], got object.",
+      "value": [
+        "1 lb carrots",
+        "2 tbsp maple syrup",
+        "1 tbsp butter",
+        "Salt to taste"
+      ]
+    }
+  ],
+  "warnings": [],
+  "info": [],
+  "registry": {
+    "schemaVersion": "<NORMALIZED_SCHEMA_VERSION>",
+    "snapshotAt": "<NORMALIZED_SNAPSHOT_AT>",
+    "curatedRulesVersion": "<NORMALIZED_CURATED_VERSION>"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "@context": "https://schema.org",
+  "@type": "JobPosting",
+  "title": "Senior Software Engineer",
+  "description": "Build a structured-data validator. Help shape the developer experience for thousands of teams.",
+  "datePosted": "2026-05-16",
+  "validThrough": "2026-07-16",
+  "employmentType": "FULL_TIME",
+  "hiringOrganization": "https://example.com/org/acme",
+  "jobLocation": "https://example.com/places/remote",
+  "url": "https://example.com/jobs/senior-engineer"
+}

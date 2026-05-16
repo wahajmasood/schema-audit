@@ -1,0 +1,21 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Recipe",
+  "name": "Maple-Glazed Carrots",
+  "image": "https://example.com/img/maple-carrots.jpg",
+  "description": "Roasted carrots with a maple-syrup glaze, ready in 25 minutes.",
+  "author": "https://example.com/people/chef-anders",
+  "datePublished": "2026-05-16",
+  "recipeYield": "4 servings",
+  "recipeCategory": "Side dish",
+  "recipeCuisine": "American",
+  "totalTime": "PT25M",
+  "prepTime": "PT5M",
+  "cookTime": "PT20M",
+  "recipeIngredient": [
+    "1 lb carrots",
+    "2 tbsp maple syrup",
+    "1 tbsp butter",
+    "Salt to taste"
+  ]
+}
