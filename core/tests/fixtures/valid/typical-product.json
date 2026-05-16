@@ -7,5 +7,6 @@
   "image": "https://example.com/images/earbuds.jpg",
   "sku": "EAR-001",
   "gtin": "01234567891234",
-  "brand": "https://example.com/brands/acme"
+  "brand": "https://example.com/brands/acme",
+  "offers": "https://example.com/offers/earbuds"
 }

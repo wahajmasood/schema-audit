@@ -145,7 +145,7 @@ describe("Scenario 10: Invalid URL", () => {
 describe("Scenario 11: Raw string input parsed", () => {
   test("validates a raw JSON string", () => {
     const result = validate(
-      '{"@context":"https://schema.org","@type":"Product","name":"X"}',
+      '{"@context":"https://schema.org","@type":"Product","name":"X","image":"https://example.com/x.jpg","offers":"https://example.com/o"}',
     );
     assert.equal(result.valid, true);
     assert.deepEqual(result.types, ["Product"]);
@@ -156,6 +156,8 @@ describe("Scenario 11: Raw string input parsed", () => {
       "@context": "https://schema.org",
       "@type": "Product",
       name: "X",
+      image: "https://example.com/x.jpg",
+      offers: "https://example.com/o",
     });
     assert.equal(result.valid, true);
   });

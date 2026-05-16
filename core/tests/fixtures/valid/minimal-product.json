@@ -1,5 +1,7 @@
 {
   "@context": "https://schema.org",
   "@type": "Product",
-  "name": "Minimal Widget"
+  "name": "Minimal Widget",
+  "image": "https://example.com/img/widget.jpg",
+  "offers": "https://example.com/offers/widget"
 }

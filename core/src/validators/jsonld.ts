@@ -18,13 +18,15 @@ import type {
   ValidateOptions,
 } from "../types.js";
 import { loadRegistry } from "../registry.js";
-import { loadCuratedRules } from "../curated-rules.js";
+import { loadCuratedRules, getCuratedRules } from "../curated-rules.js";
 import { parseError } from "../errors.js";
 import { validateContext } from "../rules/validate-context.js";
 import { validateType } from "../rules/validate-type.js";
 import { validatePropertyExistence } from "../rules/validate-property-existence.js";
 import { validatePropertyValueType } from "../rules/validate-property-value-type.js";
 import { validateUrl } from "../rules/validate-url.js";
+import { validateRequired } from "../rules/validate-required.js";
+import { validateRecommended } from "../rules/validate-recommended.js";
 
 const registry = loadRegistry();
 const curatedRules = loadCuratedRules();
@@ -175,6 +177,18 @@ export function validateJsonLd(
       ) {
         issues.push(...validateUrl(typeValue, key, val));
       }
+    }
+
+    // 5d) Layer 2 — Google Rich Results required + recommended checks.
+    //     Silent no-op for types without curated entries (e.g., Person,
+    //     Organization in cycle 3). Issues bucket into errors/warnings
+    //     alongside Layer 1.
+    const l2 = getCuratedRules(typeValue);
+    if (l2 !== undefined) {
+      issues.push(
+        ...validateRequired(o, typeValue, l2.required, l2.requiredOneOf),
+      );
+      issues.push(...validateRecommended(o, typeValue, l2.recommended));
     }
   }
 

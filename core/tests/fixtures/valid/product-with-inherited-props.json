@@ -7,5 +7,6 @@
   "image": "https://example.com/img/123.jpg",
   "identifier": "PROD-123",
   "sku": "SKU-789",
-  "brand": "https://example.com/brand/acme"
+  "brand": "https://example.com/brand/acme",
+  "offers": "https://example.com/offers/test"
 }
