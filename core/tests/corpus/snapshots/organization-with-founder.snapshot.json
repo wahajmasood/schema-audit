@@ -1,10 +1,18 @@
 {
-  "valid": true,
+  "valid": false,
   "format": "jsonld",
   "types": [
     "Organization"
   ],
-  "errors": [],
+  "errors": [
+    {
+      "type": "error",
+      "code": "INVALID_PROPERTY_VALUE_TYPE",
+      "path": "Organization.numberOfEmployees",
+      "message": "Property \"numberOfEmployees\" on type Organization expects one of [QuantitativeValue], got number.",
+      "value": 14
+    }
+  ],
   "warnings": [],
   "info": [],
   "registry": {

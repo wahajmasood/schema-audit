@@ -7,6 +7,9 @@
   "foundingDate": "1995-06-01",
   "email": "info@acme.com",
   "telephone": "+1-555-0123",
-  "numberOfEmployees": 250,
+  "numberOfEmployees": {
+    "@type": "QuantitativeValue",
+    "value": 250
+  },
   "url": "https://acme.example.com"
 }

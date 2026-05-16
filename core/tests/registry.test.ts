@@ -56,9 +56,12 @@ test("CreativeWork extends Thing (single-level parents chain)", () => {
   const def = getTypeDef("CreativeWork");
   assert.ok(def);
   assert.deepEqual(def.parents, ["Thing"]);
-  // Owns 7 properties
-  assert.equal(def.ownProperties.length, 7);
-  // headline is own to CreativeWork
+  // Schema.org defines many more own properties than our cycle-2
+  // hand-curated set; assert structural facts rather than exact counts.
+  assert.ok(
+    def.ownProperties.includes("headline"),
+    "CreativeWork should own 'headline'",
+  );
   assert.equal(def.allProperties["headline"]!.definedOn, "CreativeWork");
   // name is inherited from Thing
   assert.equal(def.allProperties["name"]!.definedOn, "Thing");
@@ -68,44 +71,49 @@ test("Article extends CreativeWork (2-level parents chain)", () => {
   const def = getTypeDef("Article");
   assert.ok(def);
   assert.deepEqual(def.parents, ["CreativeWork", "Thing"]);
-  // Own properties: articleBody, articleSection, wordCount
-  assert.deepEqual(def.ownProperties.sort(), [
-    "articleBody",
-    "articleSection",
-    "wordCount",
-  ]);
-  // articleBody defined on Article
+  // Spot-check that representative cycle-2 properties remain owned by
+  // Article; schema.org adds many more own properties that we don't
+  // enumerate here.
+  assert.ok(def.ownProperties.includes("articleBody"));
+  assert.ok(def.ownProperties.includes("articleSection"));
+  assert.ok(def.ownProperties.includes("wordCount"));
   assert.equal(def.allProperties["articleBody"]!.definedOn, "Article");
-  // headline inherited from CreativeWork
   assert.equal(def.allProperties["headline"]!.definedOn, "CreativeWork");
-  // name inherited from Thing
   assert.equal(def.allProperties["name"]!.definedOn, "Thing");
 });
 
-test("NewsArticle has the 4-level inheritance chain pre-flattened", () => {
+test("NewsArticle has multi-level inheritance pre-flattened", () => {
   const def = getTypeDef("NewsArticle");
   assert.ok(def);
+  // Schema.org has BlogPosting via SocialMediaPosting; cycle 5
+  // auto-sync introduced that intermediate. NewsArticle keeps the
+  // direct Article parent. parents is shortest chain root-last.
   assert.deepEqual(def.parents, ["Article", "CreativeWork", "Thing"]);
-  // Own properties: dateline, printSection
-  assert.deepEqual(def.ownProperties.sort(), ["dateline", "printSection"]);
-  // Total: 5 (Thing) + 7 (CreativeWork) + 3 (Article) + 2 (NewsArticle) = 17
-  assert.equal(Object.keys(def.allProperties).length, 17);
-  // Verify a representative property from each ancestor
+  // dateline and printSection are own to NewsArticle
+  assert.ok(def.ownProperties.includes("dateline"));
+  assert.ok(def.ownProperties.includes("printSection"));
+  // Properties resolve from each ancestor
   assert.equal(def.allProperties["name"]!.definedOn, "Thing");
   assert.equal(def.allProperties["headline"]!.definedOn, "CreativeWork");
   assert.equal(def.allProperties["articleBody"]!.definedOn, "Article");
   assert.equal(def.allProperties["dateline"]!.definedOn, "NewsArticle");
 });
 
-test("BlogPosting has empty ownProperties (pure-inheritance type)", () => {
+test("BlogPosting inherits from Article via SocialMediaPosting", () => {
+  // Cycle 5 auto-sync added SocialMediaPosting as the canonical
+  // intermediate parent of BlogPosting (cycle 2's hand-curated
+  // source short-circuited to Article).
   const def = getTypeDef("BlogPosting");
   assert.ok(def);
-  assert.deepEqual(def.parents, ["Article", "CreativeWork", "Thing"]);
-  assert.deepEqual(def.ownProperties, []);
-  // 15 inherited properties (5 + 7 + 3 = 15)
-  assert.equal(Object.keys(def.allProperties).length, 15);
-  // headline still resolves through inheritance
+  assert.deepEqual(def.parents, [
+    "SocialMediaPosting",
+    "Article",
+    "CreativeWork",
+    "Thing",
+  ]);
+  // headline still resolves through inheritance regardless of intermediate
   assert.equal(def.allProperties["headline"]!.definedOn, "CreativeWork");
+  assert.equal(def.allProperties["name"]!.definedOn, "Thing");
 });
 
 test("Person extends Thing", () => {
