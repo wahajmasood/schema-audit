@@ -1,0 +1,35 @@
+{
+  "_comment": "Manually-maintained Google Rich Results Test verdicts for a canary subset of the corpus. Maintained per the governance.md weekly cadence. Goes stale if lastVerified is more than 60 days old (test surfaces a diagnostic; does not fail CI).",
+  "canary": [
+    {
+      "slug": "product-full",
+      "googleVerdict": "eligible-for-rich-result",
+      "notes": "All Layer 1 + Layer 2 required + recommended present.",
+      "lastVerified": "2026-05-16"
+    },
+    {
+      "slug": "product-with-warnings",
+      "googleVerdict": "eligible-with-warnings",
+      "notes": "Required (name, image, offers) present; multiple recommended missing.",
+      "lastVerified": "2026-05-16"
+    },
+    {
+      "slug": "article",
+      "googleVerdict": "eligible-for-rich-result",
+      "notes": "All Article recommended present.",
+      "lastVerified": "2026-05-16"
+    },
+    {
+      "slug": "article-bare",
+      "googleVerdict": "eligible-with-warnings",
+      "notes": "Headline only — most recommended missing.",
+      "lastVerified": "2026-05-16"
+    },
+    {
+      "slug": "person-minimal",
+      "googleVerdict": "no-rich-result-type",
+      "notes": "Person is not a standalone Rich Results type. schema-audit treats Person as valid (no Layer 2 entry) — expected divergence flagged via diagnostic.",
+      "lastVerified": "2026-05-16"
+    }
+  ]
+}
