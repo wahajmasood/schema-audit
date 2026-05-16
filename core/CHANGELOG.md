@@ -5,6 +5,74 @@ documented in this file. The format is based on [Keep a Changelog]
 (https://keepachangelog.com/en/1.1.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.1] — 2026-05-16
+
+SDD cycle `accuracy-corpus-harness`. Operational infrastructure
+— no new validator features, no public-API surface change. Ships
+the corpus + snapshot framework, heterogeneous-input benchmark,
+and a manually-maintained Google-truth canary subset that the
+constitution promised in cycle 4.
+
+### Added
+
+- `core/tests/corpus/` — 15 production-shaped JSON-LD samples
+  covering Product / Article family / Person / Organization with
+  realistic property variation, including 2 samples that embed
+  inline Person and Organization values.
+- `core/tests/corpus/snapshots/` — committed golden output per
+  sample, normalized to strip non-deterministic registry fields
+  (`snapshotAt`, `schemaVersion`, `curatedRulesVersion`).
+- `core/tests/corpus.test.ts` — snapshot regression suite. Fails
+  CI on any unintended change in validator output for any
+  corpus sample.
+- `core/scripts/regen-corpus-snapshots.mjs` — snapshot
+  regenerator. Run via `npm run corpus:regen` after intentional
+  behavior changes. Idempotent — running twice produces no diff.
+- `core/tests/google-truth.json` + `google-truth.test.ts` —
+  manually-maintained expected Google Rich Results Test verdicts
+  for 5 corpus samples. Diagnostic-only (CI doesn't fail) so the
+  project stays honest about drift between schema-audit's output
+  and Google's without rigging snapshots.
+- `core/bench/bench-corpus.js` — heterogeneous-input benchmark
+  iterating the full corpus. The "production-shaped" number
+  `BASELINE.md` said was coming in this cycle.
+- `core/bench/BASELINE.md` — new "v0.3.1 — Heterogeneous-input
+  baseline" section: 759,176 ops/sec across 150,000 validations,
+  1.32 µs/op average. ~6× spread between fastest sample (Person
+  minimal, 0.36 µs) and slowest (Product minimal, 2.04 µs).
+- npm scripts: `corpus`, `corpus:regen`, `bench:corpus`.
+
+### Changed
+
+- `core/scripts/run-tests.js` — accepts optional positional
+  filename patterns (so the `corpus` script can run just
+  `corpus.test.ts` + `google-truth.test.ts`).
+
+### What this does NOT do
+
+- It does NOT automate diffing against Google's Rich Results Test
+  (Google has no public API). The canary is manually maintained;
+  divergences surface as test diagnostics during weekly governance
+  reviews.
+- It does NOT add headless-browser scraping of Rich Results Test
+  (decided against — too fragile, ToS-questionable).
+- It does NOT add CI perf-regression gating yet (numbers stay
+  informational until CI infrastructure exists, cycle 8+).
+
+### Test status
+
+- 112 → **133 / 133 pass** (+21 cycle-4 tests: 15 snapshot tests +
+  1 well-formedness check + 5 canary tests).
+- Coverage on `core/src/`: 99.49% lines, 97.97% branches, 97.37%
+  functions.
+
+### Dependencies
+
+- Runtime: zero (unchanged).
+- Dev: unchanged.
+
+[0.3.1]: https://github.com/wahajmasood/schema-audit/releases/tag/v0.3.1
+
 ## [0.3.0] — 2026-05-16
 
 SDD cycle `jsonld-rich-results-l2`. Adds **Layer 2** — Google Rich

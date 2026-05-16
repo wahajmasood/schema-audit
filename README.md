@@ -7,7 +7,7 @@ and zero runtime dependencies. Drop it into any application that needs
 to validate structured data: page auditors, SEO platforms, CMSes,
 content monitors, AI agents.
 
-> **Status — pre-release (v0.3.0).** JavaScript-only, JSON-LD-only.
+> **Status — pre-release (v0.3.1).** JavaScript-only, JSON-LD-only.
 > Two-layer validation:
 > - **Layer 1** (schema.org structural) for 8 types: `Thing`,
 >   `CreativeWork`, `Article`, `NewsArticle`, `BlogPosting`,
@@ -101,6 +101,12 @@ No network calls. No subprocesses. No fetching remote `@context`s.
   checks for Product / Article / NewsArticle / BlogPosting
 - ✅ Output-shape contract locked across future JS + Python releases
 - ✅ TypeScript source → dual ESM + CJS + `.d.ts`
+- ✅ **Corpus + snapshot regression suite** — 15 production-shaped
+  samples with committed golden snapshots; CI fails on any unintended
+  validator-output drift (`npm run corpus`)
+- ✅ **Heterogeneous-input benchmark** measuring throughput across
+  diverse inputs (`npm run bench:corpus`) — currently 1.32 µs/op
+  average; see `core/bench/BASELINE.md` for caveats
 - ⛔ Microdata / RDFa — cycle 6 / 7
 - ⛔ Layer 2 for additional types (Person, Organization, Recipe, Event,
   LocalBusiness, JobPosting, …) — later cycles
