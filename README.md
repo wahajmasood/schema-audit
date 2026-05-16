@@ -7,11 +7,16 @@ and zero runtime dependencies. Drop it into any application that needs
 to validate structured data: page auditors, SEO platforms, CMSes,
 content monitors, AI agents.
 
-> **Status — pre-release (v0.3.1).** JavaScript-only, JSON-LD-only.
+> **Status — pre-release (v0.4.0).** JavaScript-only, JSON-LD-only.
 > Two-layer validation:
-> - **Layer 1** (schema.org structural) for 8 types: `Thing`,
->   `CreativeWork`, `Article`, `NewsArticle`, `BlogPosting`,
->   `Person`, `Organization`, `Product`.
+> - **Layer 1** (schema.org structural) for 28 types — auto-synced
+>   from schema.org's canonical JSON-LD (`Thing`, `CreativeWork`,
+>   `Article`, `SocialMediaPosting`, `NewsArticle`, `BlogPosting`,
+>   `Person`, `Organization`, `Product`, `Book`, `Movie`,
+>   `MusicRecording`, `HowTo`, `Recipe`, `Review`, `WebSite`,
+>   `WebPage`, `FAQPage`, `SoftwareApplication`, `Course`,
+>   `MediaObject`, `VideoObject`, `Event`, `Place`, `Intangible`,
+>   `ItemList`, `BreadcrumbList`, `JobPosting`).
 > - **Layer 2** (Google Rich Results required + recommended-property
 >   checks) for 4 types: `Product` (required: name + image + one of
 >   offers/review/aggregateRating; plus recommended), `Article`,

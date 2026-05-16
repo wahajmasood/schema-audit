@@ -5,6 +5,101 @@ documented in this file. The format is based on [Keep a Changelog]
 (https://keepachangelog.com/en/1.1.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] — 2026-05-16
+
+SDD cycle `schema-org-auto-sync`. Replaces the hand-curated registry
+source with auto-extracted data from schema.org's canonical JSON-LD
+graph for a curated allowlist of 28 types. Type coverage expands
+from 8 → 28; bundle size grows accordingly.
+
+### Added
+
+- **`scripts/sync-schema.mjs`** — fetches
+  `https://schema.org/version/latest/schemaorg-current-https.jsonld`,
+  parses the @graph, inverts the property→domain model into our
+  type→properties shape, and writes `scripts/source-types.json`.
+  Zero runtime deps (Node ≥ 18 native fetch). Cache at
+  `scripts/.schemaorg-cache.jsonld` (gitignored); `--no-cache`
+  forces re-fetch.
+- **Type allowlist** of 28 entries (was 8 in cycle 4): added
+  `Book`, `Movie`, `MusicRecording`, `HowTo`, `Recipe`, `Review`,
+  `WebSite`, `WebPage`, `FAQPage`, `SoftwareApplication`,
+  `Course`, `MediaObject`, `VideoObject`, `Event`, `Place`,
+  `Intangible`, `ItemList`, `BreadcrumbList`, `JobPosting`, plus
+  `SocialMediaPosting` as the canonical intermediate parent of
+  `BlogPosting`.
+- **Three new corpus samples**: `recipe.json`, `event.json`,
+  `job-posting.json` — committed with golden snapshots.
+- **npm scripts**: `sync-schema`, `sync:force`, `sync` (composite).
+- **Multi-parent reporting** — sync script logs which alternate
+  parents it dropped when a schema.org type has multi-parent
+  inheritance and only one is in the allowlist (e.g., Course
+  extends both LearningResource and CreativeWork; we keep
+  CreativeWork).
+
+### Changed
+
+- **Property counts per type expanded substantially.** Cycle 2's
+  hand-curated `Article` had 3 own properties; schema.org's
+  canonical Article has many more (articleBody, articleSection,
+  wordCount, pageStart, pageEnd, speakable, backstory, etc.).
+- **Bundle size: 27 KB → 451 KB** (17× growth). Most of the growth
+  is the inlined registry JSON. Still well within "small npm
+  package" territory; flagged for revisit if all-800-types
+  expansion happens in a future cycle (which would necessitate
+  runtime parent-walking to keep bundle reasonable).
+- **Bench drift: 1.32 → 1.46 µs/op** (heterogeneous, parsed input).
+  Per-property iteration is slightly slower over the larger
+  flattened `allProperties` map. Still well under target.
+- **`scripts/cycle1-types.json` renamed to `scripts/source-types.json`**
+  via `git mv` (history preserved). Filename was misleading after
+  cycle 2; rename was overdue.
+- **`Organization.numberOfEmployees` value-type** changed from
+  `Integer` (cycle-2 hand-curated, incorrect per schema.org) to
+  `QuantitativeValue` (canonical). Cycle-2 fixtures using
+  `numberOfEmployees: 250` were updated to the canonical object
+  shape `{ "@type": "QuantitativeValue", "value": 250 }`.
+- **`BlogPosting.parents`** chain now includes
+  `SocialMediaPosting` as the canonical intermediate
+  (was `["Article", "CreativeWork", "Thing"]`; now
+  `["SocialMediaPosting", "Article", "CreativeWork", "Thing"]`).
+- **Cycle-2 registry tests** loosened to assert structural facts
+  (parents chain, presence of representative properties) rather
+  than exact property counts. The auto-synced source produces
+  many more properties than the hand-curated cycle-2 source had.
+
+### What this does NOT do
+
+- **Not all 800+ schema.org types.** The allowlist is 28. The
+  full-coverage version is a future cycle that pairs with a
+  runtime parent-walking architecture change to keep bundle size
+  manageable.
+- **No multi-parent inheritance** (e.g., `LocalBusiness` extends
+  both `Organization` and `Place`). Sync script rejects allowlist
+  entries with multiple in-allowlist parents; defers `LocalBusiness`
+  and friends to the same future cycle.
+- **No GitHub Action weekly automation**. Sync is run manually
+  via `npm run sync` per governance.md's weekly cadence. Automation
+  ships when CI infra lands (cycle 8+).
+- **No Layer-2 curated rules for the new types.** Recipe, Event,
+  JobPosting etc. validate at Layer 1 only. Layer-2 rules for
+  these arrive in a future cycle (manual Google docs reading
+  required).
+
+### Test status
+
+- 133 → **136 / 136 pass** (+3 new corpus samples for Recipe,
+  Event, JobPosting).
+- Coverage on `core/src/`: 99.93% lines, 97.97% branches, 97.37%
+  functions.
+
+### Dependencies
+
+- Runtime: zero (unchanged).
+- Dev: unchanged.
+
+[0.4.0]: https://github.com/wahajmasood/schema-audit/releases/tag/v0.4.0
+
 ## [0.3.1] — 2026-05-16
 
 SDD cycle `accuracy-corpus-harness`. Operational infrastructure

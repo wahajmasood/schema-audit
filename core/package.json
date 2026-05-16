@@ -1,6 +1,6 @@
 {
   "name": "schema-audit",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Zero-dependency schema markup validation engine. Validates JSON-LD, Microdata, and RDFa against schema.org and Google Rich Results rules.",
   "license": "MIT",
   "author": "wahajmasood",
@@ -48,6 +48,9 @@
   "scripts": {
     "build": "tsup",
     "build:registry": "node ../scripts/build-registry.mjs",
+    "sync-schema": "node ../scripts/sync-schema.mjs",
+    "sync:force": "node ../scripts/sync-schema.mjs --no-cache",
+    "sync": "npm run sync-schema && npm run build:registry",
     "clean": "rm -rf dist",
     "test": "node scripts/run-tests.js",
     "test:coverage": "node scripts/run-tests.js --experimental-test-coverage",
