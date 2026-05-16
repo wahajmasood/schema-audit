@@ -78,3 +78,49 @@ multi-machine measurement, GC pressure, concurrent load — ships
 alongside the accuracy corpus in cycle 4 per the roadmap. That's
 where real-world throughput claims will be earned by measurement
 rather than inferred from a tight loop.
+
+---
+
+## v0.3.1 — 2026-05-16 — Heterogeneous-input baseline (cycle 4)
+
+A second benchmark, designed to reflect real-world workloads more
+honestly: iterates over the entire 15-sample corpus thousands of
+times instead of calling the same input in a hot loop.
+
+### Methodology
+
+- **Corpus:** `core/tests/corpus/*.json` — 15 samples spanning
+  Product (5 variants), the Article family (4 variants), Person
+  (2), Organization (2), and Articles with inline Person /
+  Organization objects (2).
+- **Rounds:** 10,000 iterations of the *full* corpus
+  (150,000 total `validate()` calls).
+- **Warmup:** 100 iterations of the full corpus before timing.
+- **Build:** `npm run build && node bench/bench-corpus.js`.
+
+### v0.3.1 — Node v22.18.0 / linux x64
+
+| Measurement | ops/sec | µs/op |
+|-------------|---------|-------|
+| **Heterogeneous total** (150,000 validations) | 759,176 | **1.32** |
+| Slowest sample: `product-minimal` | 490,699 | 2.04 |
+| Fastest sample: `person-minimal` | 2,797,649 | 0.36 |
+
+### What this signal tells us
+
+- Cost varies ~6× across the corpus: types with no Layer-2 rules
+  (Person, Organization minimal) run sub-microsecond; types with
+  full Layer-2 checks (Product variants) are around 1.5–2 µs.
+- Heterogeneous workloads — what most callers experience — average
+  about **1.32 µs/op**, between the per-sample fastest and slowest.
+- This number is closer to a real-world delivery rate than the
+  single-input micro-benchmark, but still subject to all the
+  caveats from the v0.1.0 section: single machine, no concurrent
+  load, no GC pressure modeled, no I/O context.
+
+### What this does NOT prove
+
+Same disclaimers as v0.1.0. The corpus is a curated subset, not
+arbitrary production input. Numbers will vary on different
+hardware. Throughput claims in real applications will be lower
+due to surrounding I/O and concurrent work.
