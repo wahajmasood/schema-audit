@@ -26,6 +26,9 @@ export const ErrorCode = {
   UNKNOWN_PROPERTY: "UNKNOWN_PROPERTY",
   INVALID_PROPERTY_VALUE_TYPE: "INVALID_PROPERTY_VALUE_TYPE",
   INVALID_URL: "INVALID_URL",
+  // Layer 2 — Google Rich Results (added in 0.3.0)
+  MISSING_REQUIRED_PROPERTY: "MISSING_REQUIRED_PROPERTY",
+  MISSING_RECOMMENDED_PROPERTY: "MISSING_RECOMMENDED_PROPERTY",
 } as const;
 
 export type ErrorCodeName = (typeof ErrorCode)[keyof typeof ErrorCode];
@@ -154,5 +157,46 @@ export function invalidUrl(
     `${typeName}.${propertyName}`,
     `Property "${propertyName}" on type ${typeName} is not a valid URL.`,
     value,
+  );
+}
+
+// ─── Layer 2 — Google Rich Results factories (added in 0.3.0) ──────────────
+
+export function missingRequiredProperty(
+  typeName: string,
+  propertyName: string,
+): Issue {
+  return issue(
+    "error",
+    ErrorCode.MISSING_REQUIRED_PROPERTY,
+    `${typeName}.${propertyName}`,
+    `Required property "${propertyName}" is missing on type ${typeName} (Google Rich Results).`,
+    null,
+  );
+}
+
+export function missingRequiredPropertyOneOf(
+  typeName: string,
+  alternatives: string[],
+): Issue {
+  return issue(
+    "error",
+    ErrorCode.MISSING_REQUIRED_PROPERTY,
+    typeName,
+    `Type ${typeName} requires at least one of: [${alternatives.join(", ")}] (Google Rich Results).`,
+    null,
+  );
+}
+
+export function missingRecommendedProperty(
+  typeName: string,
+  propertyName: string,
+): Issue {
+  return issue(
+    "warning",
+    ErrorCode.MISSING_RECOMMENDED_PROPERTY,
+    `${typeName}.${propertyName}`,
+    `Recommended property "${propertyName}" is missing on type ${typeName} (Google Rich Results).`,
+    null,
   );
 }
