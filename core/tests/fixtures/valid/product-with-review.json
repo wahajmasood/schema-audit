@@ -1,0 +1,8 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Vintage Camera",
+  "image": "https://example.com/img/camera.jpg",
+  "brand": "https://example.com/brands/oldlens",
+  "review": "https://example.com/reviews/camera"
+}

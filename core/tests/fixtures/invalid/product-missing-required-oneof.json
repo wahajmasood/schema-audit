@@ -1,0 +1,7 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "No Offers Widget",
+  "image": "https://example.com/img/widget.jpg",
+  "brand": "https://example.com/brands/acme"
+}

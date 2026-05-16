@@ -1,0 +1,6 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "image": "https://example.com/img/nameless.jpg",
+  "offers": "https://example.com/offers/nameless"
+}
