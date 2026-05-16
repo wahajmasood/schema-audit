@@ -1,6 +1,6 @@
 {
   "schemaVersion": "latest-2026-05",
-  "snapshotAt": "2026-05-15T23:25:09.198Z",
+  "snapshotAt": "2026-05-16T00:04:44.776Z",
   "types": {
     "Thing": {
       "parents": [],
@@ -721,6 +721,37 @@
             "Organization"
           ],
           "definedOn": "Product"
+        },
+        "offers": {
+          "valueTypes": [
+            "Offer",
+            "Demand"
+          ],
+          "definedOn": "Product"
+        },
+        "review": {
+          "valueTypes": [
+            "Review"
+          ],
+          "definedOn": "Product"
+        },
+        "aggregateRating": {
+          "valueTypes": [
+            "AggregateRating"
+          ],
+          "definedOn": "Product"
+        },
+        "mpn": {
+          "valueTypes": [
+            "Text"
+          ],
+          "definedOn": "Product"
+        },
+        "audience": {
+          "valueTypes": [
+            "Audience"
+          ],
+          "definedOn": "Product"
         }
       },
       "ownProperties": [
@@ -728,7 +759,12 @@
         "sku",
         "model",
         "gtin",
-        "manufacturer"
+        "manufacturer",
+        "offers",
+        "review",
+        "aggregateRating",
+        "mpn",
+        "audience"
       ]
     }
   }

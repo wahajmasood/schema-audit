@@ -73,7 +73,12 @@
         "sku": ["Text"],
         "model": ["Text", "ProductModel"],
         "gtin": ["Text"],
-        "manufacturer": ["Organization"]
+        "manufacturer": ["Organization"],
+        "offers": ["Offer", "Demand"],
+        "review": ["Review"],
+        "aggregateRating": ["AggregateRating"],
+        "mpn": ["Text"],
+        "audience": ["Audience"]
       }
     }
   }
