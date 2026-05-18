@@ -11,6 +11,7 @@ import { loadCuratedRules } from "./curated-rules.js";
 import { unknownFormat } from "./errors.js";
 import { validateJsonLd } from "./validators/jsonld.js";
 import { validateMicrodata } from "./validators/microdata.js";
+import { validateRdfa } from "./validators/rdfa.js";
 import { detect } from "./utils/detector.js";
 
 // Re-export the public type contract.
@@ -30,7 +31,7 @@ export type { ErrorCodeName } from "./errors.js";
 export { detect } from "./utils/detector.js";
 
 /** Package version. */
-export const VERSION = "0.5.0";
+export const VERSION = "0.6.0";
 
 const registry = loadRegistry();
 const curatedRules = loadCuratedRules();
@@ -78,10 +79,10 @@ export function validate(
   const opts = options ?? {};
   const requested = opts.format ?? "auto";
 
-  // Non-string input: always JSON-LD (Microdata requires HTML).
+  // Non-string input: always JSON-LD (Microdata + RDFa require HTML).
   if (typeof input !== "string") {
-    if (requested === "microdata") {
-      return unknownFormatResult(input, "microdata");
+    if (requested === "microdata" || requested === "rdfa") {
+      return unknownFormatResult(input, requested);
     }
     return validateJsonLd(input, opts);
   }
@@ -96,7 +97,8 @@ export function validate(
 
   if (resolved === "jsonld") return validateJsonLd(input, opts);
   if (resolved === "microdata") return validateMicrodata(input, opts);
+  if (resolved === "rdfa") return validateRdfa(input, opts);
 
-  // unknown / rdfa (cycle 7) / jsonld-embedded (future) — not yet handled
+  // unknown / jsonld-embedded (future) — not yet handled
   return unknownFormatResult(input, resolved);
 }
