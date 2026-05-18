@@ -27,7 +27,7 @@ from .validators.jsonld import validate_jsonld
 from .validators.microdata import validate_microdata
 from .validators.rdfa import validate_rdfa
 
-VERSION = "0.9.0"
+VERSION = "1.0.0"
 __version__ = VERSION
 
 __all__ = [

@@ -13,7 +13,7 @@ def test_detect_is_callable():
 
 def test_version_is_string():
     assert isinstance(schema_audit.VERSION, str)
-    assert schema_audit.VERSION == "0.9.0"
+    assert schema_audit.VERSION == "1.0.0"
     assert schema_audit.__version__ == schema_audit.VERSION
 
 

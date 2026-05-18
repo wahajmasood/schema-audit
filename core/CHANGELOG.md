@@ -5,6 +5,77 @@ documented in this file. The format is based on [Keep a Changelog]
 (https://keepachangelog.com/en/1.1.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] — 2026-05-18
+
+**First stable release.** Output shape, error codes, and public API are
+locked. Breaking changes from this point require a major-version bump.
+
+### What v1.0 ships
+
+The result of cycles 1–11 — a single feature set across two language
+runtimes:
+
+- **Two-layer validation**: schema.org structural (Layer 1) + Google
+  Rich Results required/recommended-property checks (Layer 2, curated
+  for Product / Article / NewsArticle / BlogPosting).
+- **28 registered types** auto-synced from schema.org's canonical
+  JSON-LD graph (Thing through JobPosting; the full allowlist lives
+  in `scripts/sync-schema.mjs`). Pre-flattened inheritance —
+  validation does zero parent-walking at runtime.
+- **Three input formats**: JSON-LD, Microdata, RDFa. Auto-detected
+  from the input shape; force with `format=`.
+- **Cross-language parity**: JS and Python emit byte-identical
+  output for any input. Enforced by a shared conformance corpus
+  (`tests/conformance/`) plus a regen script that refuses to write
+  goldens when the runtimes disagree.
+- **Zero runtime dependencies on the Python side** (stdlib only).
+  **One named runtime dep on the JS side** (`parse5` for HTML
+  parsing) — the only exception in the constitution.
+- **CLI binary** in both packages: `schema-audit validate
+  ./page.html`, with subcommands and flags identical across
+  runtimes.
+- **TypedDict-typed dict / TypeScript interface** for the return
+  shape, so callers get type safety without conversion ceremony.
+- **Locked surface**: 16 error codes, one `ValidationResult` shape,
+  one `Issue` shape, never changing without a major-version bump.
+
+### Cycle 11 changes (the release-prep additions)
+
+- **JS bundle dedup**: `dist/cli.js` shrank from ~460 KB to ~6 KB by
+  switching tsup to `splitting: true`. Both bundles share a 469 KB
+  chunk that carries the validator. Total npm tarball: 79 kB
+  (was 164 kB before this cycle).
+- **`scripts/bump-version.mjs`**: single command updates all three
+  version locations (`core/package.json`, `core/src/index.ts`,
+  `python/src/schema_audit/__init__.py`) and prepends a placeholder
+  CHANGELOG block. Refuses non-SemVer input; reverts on partial
+  failure.
+- **`examples/`**: four cross-language scenarios (page-auditor,
+  cms-validator-hook, ai-agent-tool, monitor) — JS + Python side by
+  side, smoke-tested end-to-end.
+- **Publish-readiness verified**: `npm publish --dry-run` shows 16
+  files, 79 kB compressed. `python -m build` produces a wheel that
+  installs cleanly and exposes `from schema_audit import validate`
+  + the `schema-audit` script entry point.
+- **Package metadata**: descriptions, keywords, classifiers
+  (`Development Status :: 5 - Production/Stable`), LICENSE files
+  copied into both package roots so they ship in their respective
+  tarballs.
+- **No new validator logic.** All API surfaces from v0.9.0 are
+  unchanged.
+
+### Not in this release (post-1.0 candidates)
+
+- GitHub Actions CI workflow (`.github/` is gitignored — policy
+  decision deferred).
+- CURIE prefix support for RDFa (`typeof="schema:Product"`).
+- `jsonld-embedded` (JSON-LD inside HTML script tags) as a separate
+  format value.
+- Layer 2 curated rules for more types (Recipe, Event, JobPosting,
+  LocalBusiness, …).
+- Async validator surface (validation is CPU work, not I/O — no
+  plans for an async API).
+
 ## [0.9.0] — 2026-05-18
 
 SDD cycle `python-formats-and-cli`. Completes Python's format coverage:

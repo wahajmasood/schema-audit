@@ -1,7 +1,7 @@
 {
   "name": "schema-audit",
-  "version": "0.9.0",
-  "description": "Zero-dependency schema markup validation engine. Validates JSON-LD, Microdata, and RDFa against schema.org and Google Rich Results rules.",
+  "version": "1.0.0",
+  "description": "Schema-markup validation engine. Validates JSON-LD, Microdata, and RDFa against schema.org and Google Rich Results rules — same engine, same verdicts in JavaScript and Python.",
   "license": "MIT",
   "author": "wahajmasood",
   "homepage": "https://github.com/wahajmasood/schema-audit#readme",
@@ -21,7 +21,10 @@
     "structured-data",
     "validation",
     "rich-results",
-    "seo"
+    "seo",
+    "page-auditor",
+    "cms",
+    "cli"
   ],
   "type": "module",
   "main": "./dist/index.cjs",
@@ -36,7 +39,7 @@
     "./registry": "./registry/schema-types.json"
   },
   "bin": {
-    "schema-audit": "./bin/schema-audit.js"
+    "schema-audit": "bin/schema-audit.js"
   },
   "files": [
     "dist",
@@ -63,7 +66,8 @@
     "bench": "node bench/bench-jsonld-product.js",
     "bench:corpus": "node bench/bench-corpus.js",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run clean && npm run build && npm test"
+    "release:bump": "node ../scripts/bump-version.mjs",
+    "prepublishOnly": "npm run clean && npm run build && rm -f dist/*.map && npm test"
   },
   "dependencies": {
     "parse5": "^7.0.0"

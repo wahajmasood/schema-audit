@@ -7,11 +7,13 @@ and zero runtime dependencies. Drop it into any application that needs
 to validate structured data: page auditors, SEO platforms, CMSes,
 content monitors, AI agents.
 
-> **Status — pre-release (v0.9.0).** **Full parity** between
-> JavaScript and Python. Both ship JSON-LD + Microdata + RDFa
-> validation, the same `schema-audit` CLI binary, and the same
-> output shape. The cross-language conformance corpus
-> (`tests/conformance/`) makes the parity a test-enforced invariant.
+> **v1.0.0** — first stable release. Output shape, error codes, and
+> public API are locked; breaking changes from here require a
+> major-version bump. JavaScript and Python ship full parity:
+> JSON-LD + Microdata + RDFa validation, the same `schema-audit` CLI
+> binary, and byte-identical output for any input. The cross-language
+> conformance corpus (`tests/conformance/`) enforces the parity at
+> test time.
 >
 > Available as a JS library, JS CLI binary, Python library, and
 > Python CLI binary — same surface area, same verdicts.
@@ -46,15 +48,9 @@ Python:
 pip install schema-audit
 ```
 
-Neither package is on its public registry yet — install from this repo
-until v1.0:
-
-```bash
-# JS (from a local clone)
-cd schema-audit/core && npm install && npm run build
-# Python
-cd schema-audit/python && pip install .
-```
+See [`examples/`](./examples/) for four cross-language scenarios
+(page auditor, CMS pre-save hook, AI-agent tool, URL monitor) showing
+how to plug `schema-audit` into real applications.
 
 ## CLI
 

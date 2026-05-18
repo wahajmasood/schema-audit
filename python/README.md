@@ -5,29 +5,21 @@ schema-markup validation engine that mirrors **schema.org** structural
 rules and **Google Rich Results** eligibility checks with full
 cross-language parity to the JavaScript package.
 
-> **Status — pre-release (v0.9.0).** Full format coverage:
-> JSON-LD + Microdata + RDFa, plus a `schema-audit` CLI binary. Same
-> output shape and same verdicts as the JS package — enforced by a
-> shared cross-language conformance corpus. Not yet on PyPI; install
-> from this repo until v1.0.
+> **v1.0.0** — first stable release. JSON-LD + Microdata + RDFa
+> validation plus a `schema-audit` CLI. Output shape, error codes,
+> and public API are locked. Same verdicts as the JS package —
+> enforced by a shared cross-language conformance corpus.
 
 **Zero runtime dependencies** — stdlib only.
 
 ## Install
 
-Once published to PyPI:
-
 ```bash
 pip install schema-audit
 ```
 
-Until then, install from this repository:
-
-```bash
-git clone https://github.com/wahajmasood/schema-audit
-cd schema-audit/python
-pip install .
-```
+See [`../examples/`](../examples/) for cross-language usage scenarios
+side-by-side with the JavaScript equivalents.
 
 ## Usage
 
