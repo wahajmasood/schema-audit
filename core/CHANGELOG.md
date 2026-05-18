@@ -5,6 +5,104 @@ documented in this file. The format is based on [Keep a Changelog]
 (https://keepachangelog.com/en/1.1.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] — 2026-05-18
+
+SDD cycle `microdata-validator`. Adds **Microdata** as a second
+input format — the first format beyond JSON-LD. Exercises
+`principles.md`'s "one named exception" allowance for an HTML parser
+and validates the architectural promise that adding formats is
+additive on top of the existing rule engine.
+
+### Added
+
+- **One runtime dependency**: `parse5` ^7.0.0 — spec-compliant HTML
+  parser; used by jsdom. `npm ls --omit=dev` now shows: `parse5@7.3.0`
+  (one entry; no transitive runtime deps).
+- **`core/src/utils/detector.ts`** — `detect(input)` auto-classifies
+  input as `jsonld` / `microdata` / `rdfa` (cycle 7) / `unknown`.
+  Substring sniffing; pure; fast.
+- **`core/src/utils/microdata-extractor.ts`** — parses HTML via
+  parse5, walks the tree, extracts top-level `[itemscope]` items
+  into JSON-LD-shaped objects. Handles per-element value rules:
+  `meta`→content, `a`/`link`→href, `img`/`audio`/`video`/etc.→src,
+  `time`→datetime, `data`/`meter`→value, others→textContent.
+  Nested itemscope yields nested objects. Multi-valued itemprop
+  attaches the same value to each name.
+- **`core/src/validators/microdata.ts`** — orchestrator. Runs the
+  extractor, delegates per-item validation to the shared
+  `per-item.ts` engine, aggregates issues, prefixes paths with
+  `<Type>[<index>]` when multiple items share a type.
+- **3 new error codes** + factories:
+  - `NO_ITEMSCOPE` (error) — element has `itemtype` but no `itemscope`
+  - `MISSING_ITEMTYPE` (error) — top-level `[itemscope]` without `itemtype`
+  - `INVALID_ITEMTYPE` (error) — itemtype URL doesn't parse, isn't
+    schema.org, or references an unknown type
+- **`core/src/validators/per-item.ts`** — extracted from
+  `validators/jsonld.ts` last cycle as foundation for this one.
+  Shared by both JSON-LD and Microdata orchestrators.
+- **6 new HTML fixtures** under `core/tests/fixtures/` (valid +
+  invalid) plus 12 Given/When/Then scenarios in
+  `validate-microdata.test.ts`.
+- **Corpus extension**: 2 new HTML samples
+  (`microdata-product.html`, `microdata-article.html`) with golden
+  snapshots. Corpus + regen scripts updated to handle `.html`
+  files alongside `.json`.
+- **Public `detect()` export** so callers can pre-classify input
+  without invoking the full validator.
+
+### Changed
+
+- **`ValidateOptions.format`** widened from `"auto" | "jsonld"` to
+  `"auto" | "jsonld" | "microdata"`. RDFa arrives in cycle 7.
+- **`validate(input, options?)`** now dispatches based on resolved
+  format (auto-detect or explicit). Object inputs still always go
+  to the JSON-LD pipeline (Microdata requires HTML strings).
+- **Detector** also treats `itemtype` alone (without `itemscope`)
+  as a Microdata signal — so broken markup routes to the right
+  pipeline and surfaces `NO_ITEMSCOPE` instead of `UNKNOWN_FORMAT`.
+
+### Test status
+
+- 136 → **179 / 179 pass** (+43 cycle-6 tests: 14 detector + 15
+  extractor + 12 validator scenarios + 2 corpus snapshots).
+- Coverage on `core/src/`: 99.89% lines, 95.90% branches, 98.15%
+  functions.
+
+### Performance
+
+- Heterogeneous bench (now 20 corpus samples incl. 2 HTML):
+  **1.37 µs/op** (vs cycle-5's 1.46 µs/op single-format).
+- Microdata-specific samples in the corpus run through parse5; per-
+  sample times are still in the 1–3 µs range. parse5 is fast.
+- Slowest sample: `recipe` (JSON; many properties), 2.21 µs/op.
+  Fastest: `person-minimal`, 0.33 µs/op.
+
+### Bundle size
+
+- ESM: ~451 KB (essentially unchanged from cycle 5's 451 KB —
+  parse5 ships outside the bundle as a runtime dep; the bundle
+  only carries our code + the inlined registry).
+- npm install size grows by parse5's footprint (~80 KB unpacked).
+
+### What this does NOT do
+
+- **No `jsonld-embedded` extraction** (pulling JSON-LD from
+  `<script type="application/ld+json">` tags). Different
+  extraction logic; ships in its own small next cycle.
+- **No RDFa** — cycle 7.
+- **No `itemref` attribute support** — rare in practice; documented
+  as a known limitation.
+- **No DOM abstraction exported** — parse5 is internal; not
+  re-exported.
+
+### Dependencies
+
+- **Runtime**: `parse5` ^7.0.0 (the one allowed exception per
+  principles.md).
+- **Dev**: unchanged.
+
+[0.5.0]: https://github.com/wahajmasood/schema-audit/releases/tag/v0.5.0
+
 ## [0.4.0] — 2026-05-16
 
 SDD cycle `schema-org-auto-sync`. Replaces the hand-curated registry
