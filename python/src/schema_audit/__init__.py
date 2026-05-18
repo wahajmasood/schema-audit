@@ -20,12 +20,14 @@ from typing import cast
 
 from ._detector import detect
 from .curated_rules import load_curated_rules
-from .errors import ErrorCode, unsupported_format
+from .errors import ErrorCode
 from .registry import load_registry
 from .types import Format, Issue, RegistryInfo, Severity, ValidationResult
 from .validators.jsonld import validate_jsonld
+from .validators.microdata import validate_microdata
+from .validators.rdfa import validate_rdfa
 
-VERSION = "0.8.0"
+VERSION = "0.9.0"
 __version__ = VERSION
 
 __all__ = [
@@ -53,18 +55,14 @@ def _registry_provenance() -> RegistryInfo:
     }
 
 
-def _unsupported_format_result(requested: Format) -> ValidationResult:
-    """Build a structured result for ``microdata`` / ``rdfa`` (cycle 9 only).
+def _unknown_format_result(input_value: object, requested: Format) -> ValidationResult:
+    from .errors import unknown_format
 
-    The Python package will validate these formats natively in cycle 10.
-    Until then we emit a well-formed result whose ``errors`` array
-    surfaces the limitation — callers do not have to special-case nulls.
-    """
     return {
         "valid": False,
         "format": requested,
         "types": [],
-        "errors": [unsupported_format(requested)],
+        "errors": [unknown_format(input_value)],
         "warnings": [],
         "info": [],
         "registry": _registry_provenance(),
@@ -79,39 +77,42 @@ def validate(
 ) -> ValidationResult:
     """Validate structured data against schema.org + Google Rich Results.
 
-    :param input_value: JSON-LD as either a raw JSON string or an
-        already-parsed ``dict``. ``list`` and other types are routed
-        through the parser (which will return a ``PARSE_ERROR`` result),
-        matching the JavaScript package's behavior exactly.
-    :param format: ``"auto"`` (default) auto-detects from the input
-        shape; ``"jsonld"`` forces the JSON-LD pipeline. Passing
-        ``"microdata"`` or ``"rdfa"`` returns an
-        ``UNSUPPORTED_FORMAT`` result in v0.8.0 — full Python parity
-        ships in the next release.
+    :param input_value: A JSON-LD string, a parsed ``dict``, or an HTML
+        string. When ``format == "auto"`` (the default) the format is
+        sniffed from the input shape. JSON arrays and other top-level
+        types are routed through the JSON-LD parser, which will return
+        a ``PARSE_ERROR`` result — matching the JS package exactly.
+    :param format: one of ``"auto"`` | ``"jsonld"`` | ``"microdata"``
+        | ``"rdfa"``. Passing a dict together with
+        ``format="microdata"``/``"rdfa"`` returns an
+        ``UNKNOWN_FORMAT`` result because Microdata and RDFa require
+        an HTML string.
     :param strict: when True, warnings flip ``valid`` to ``False``.
-    :returns: a :class:`ValidationResult` dict with the same shape the
-        JS package emits.
+    :returns: a :class:`ValidationResult` dict with the same shape JS
+        emits.
 
     Examples::
 
         from schema_audit import validate
 
-        # dict input
+        # JSON-LD (dict or string)
         validate({"@context": "https://schema.org", "@type": "Product", ...})
-
-        # JSON string input
         validate('{"@context":"https://schema.org","@type":"Product"}')
 
+        # Microdata / RDFa (HTML string)
+        validate('<div itemscope itemtype="https://schema.org/Product">…')
+        validate('<div vocab="https://schema.org/" typeof="Product">…')
+
         # Force a format (skip detection)
-        validate(html_string, format="microdata")  # → UNSUPPORTED_FORMAT result
+        validate(html_string, format="microdata")
     """
     requested = format or "auto"
 
-    # Non-string inputs — Microdata / RDFa cannot be a Python dict, so
-    # they always go through the JSON-LD path unless explicitly forced.
+    # Non-string input is always JSON-LD shape — Microdata / RDFa need
+    # an HTML string.
     if not isinstance(input_value, str):
         if requested == "microdata" or requested == "rdfa":
-            return _unsupported_format_result(cast(Format, requested))
+            return _unknown_format_result(input_value, cast(Format, requested))
         return validate_jsonld(input_value, strict=strict)
 
     # Resolve format from option or auto-detect.
@@ -119,24 +120,14 @@ def validate(
     if requested == "auto":
         resolved = detect(input_value)
     else:
-        # Caller asked for an explicit format. Trust it.
         resolved = cast(Format, requested)
 
     if resolved == "jsonld":
         return validate_jsonld(input_value, strict=strict)
-
-    if resolved in ("microdata", "rdfa"):
-        return _unsupported_format_result(resolved)
+    if resolved == "microdata":
+        return validate_microdata(input_value, strict=strict)
+    if resolved == "rdfa":
+        return validate_rdfa(input_value, strict=strict)
 
     # "unknown" or any future format we don't yet handle.
-    from .errors import unknown_format
-
-    return {
-        "valid": False,
-        "format": resolved,
-        "types": [],
-        "errors": [unknown_format(input_value)],
-        "warnings": [],
-        "info": [],
-        "registry": _registry_provenance(),
-    }
+    return _unknown_format_result(input_value, resolved)

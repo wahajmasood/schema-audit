@@ -13,14 +13,17 @@ def test_detect_is_callable():
 
 def test_version_is_string():
     assert isinstance(schema_audit.VERSION, str)
-    assert schema_audit.VERSION == "0.8.0"
+    assert schema_audit.VERSION == "0.9.0"
     assert schema_audit.__version__ == schema_audit.VERSION
 
 
 def test_error_code_constants_exposed():
     assert schema_audit.ErrorCode.MISSING_CONTEXT == "MISSING_CONTEXT"
     assert schema_audit.ErrorCode.MISSING_REQUIRED_PROPERTY == "MISSING_REQUIRED_PROPERTY"
-    assert schema_audit.ErrorCode.UNSUPPORTED_FORMAT == "UNSUPPORTED_FORMAT"
+    assert schema_audit.ErrorCode.NO_ITEMSCOPE == "NO_ITEMSCOPE"
+    assert schema_audit.ErrorCode.NO_VOCAB == "NO_VOCAB"
+    # UNSUPPORTED_FORMAT was retired in cycle 10 (Python gained Microdata + RDFa).
+    assert not hasattr(schema_audit.ErrorCode, "UNSUPPORTED_FORMAT")
 
 
 def test_validate_returns_dict_with_locked_shape():
