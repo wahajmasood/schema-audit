@@ -29,6 +29,10 @@ export const ErrorCode = {
   // Layer 2 — Google Rich Results (added in 0.3.0)
   MISSING_REQUIRED_PROPERTY: "MISSING_REQUIRED_PROPERTY",
   MISSING_RECOMMENDED_PROPERTY: "MISSING_RECOMMENDED_PROPERTY",
+  // Microdata extraction (added in 0.5.0)
+  NO_ITEMSCOPE: "NO_ITEMSCOPE",
+  MISSING_ITEMTYPE: "MISSING_ITEMTYPE",
+  INVALID_ITEMTYPE: "INVALID_ITEMTYPE",
 } as const;
 
 export type ErrorCodeName = (typeof ErrorCode)[keyof typeof ErrorCode];
@@ -198,5 +202,37 @@ export function missingRecommendedProperty(
     `${typeName}.${propertyName}`,
     `Recommended property "${propertyName}" is missing on type ${typeName} (Google Rich Results).`,
     null,
+  );
+}
+
+// ─── Microdata extraction factories (added in 0.5.0) ───────────────────────
+
+export function noItemscope(elementTag: string): Issue {
+  return issue(
+    "error",
+    ErrorCode.NO_ITEMSCOPE,
+    "",
+    `<${elementTag}> has an "itemtype" attribute but is missing "itemscope". Microdata requires both on the same element.`,
+    null,
+  );
+}
+
+export function missingItemtype(): Issue {
+  return issue(
+    "error",
+    ErrorCode.MISSING_ITEMTYPE,
+    "",
+    "Top-level [itemscope] element is missing an itemtype attribute. Microdata requires itemtype to identify the schema.org type.",
+    null,
+  );
+}
+
+export function invalidItemtype(value: unknown, reason: string): Issue {
+  return issue(
+    "error",
+    ErrorCode.INVALID_ITEMTYPE,
+    "",
+    `Invalid itemtype: ${reason}`,
+    value,
   );
 }
