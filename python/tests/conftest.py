@@ -30,3 +30,9 @@ def fixture_text(category: str, name: str) -> str:
     """Return the raw JSON text of a fixture (for string-input tests)."""
     path = FIXTURES / category / f"{name}.json"
     return path.read_text(encoding="utf-8")
+
+
+def fixture_html(category: str, name: str) -> str:
+    """Return the raw HTML text of a fixture (for Microdata / RDFa tests)."""
+    path = FIXTURES / category / f"{name}.html"
+    return path.read_text(encoding="utf-8")

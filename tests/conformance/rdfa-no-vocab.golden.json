@@ -1,0 +1,21 @@
+{
+  "errors": [
+    {
+      "code": "NO_VOCAB",
+      "message": "Element has typeof=\"Product\" but no ancestor [vocab] and typeof is not a fully-qualified schema.org URL. RDFa needs vocab to resolve a bare typeof.",
+      "path": "",
+      "type": "error",
+      "value": "Product"
+    }
+  ],
+  "format": "rdfa",
+  "info": [],
+  "registry": {
+    "curatedRulesVersion": "google-rich-results-docs-2026-05-16",
+    "schemaVersion": "schema.org-2026-05-16",
+    "snapshotAt": "<NORMALIZED>"
+  },
+  "types": [],
+  "valid": false,
+  "warnings": []
+}

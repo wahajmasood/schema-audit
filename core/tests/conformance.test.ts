@@ -43,7 +43,7 @@ function normalize(result: unknown): unknown {
 }
 
 const inputs = readdirSync(CORPUS_DIR)
-  .filter((f) => f.endsWith(".input.json"))
+  .filter((f) => f.endsWith(".input.json") || f.endsWith(".input.html"))
   .sort();
 
 if (inputs.length === 0) {
@@ -54,21 +54,24 @@ if (inputs.length === 0) {
 }
 
 for (const file of inputs) {
-  const name = basename(file, ".input.json");
+  const isHtml = file.endsWith(".input.html");
+  const stem = isHtml
+    ? basename(file, ".input.html")
+    : basename(file, ".input.json");
   const inputPath = resolve(CORPUS_DIR, file);
-  const goldenPath = inputPath.replace(/\.input\.json$/, ".golden.json");
+  const goldenPath = resolve(CORPUS_DIR, `${stem}.golden.json`);
 
-  test(`conformance: ${name}`, () => {
-    const input = JSON.parse(readFileSync(inputPath, "utf8"));
-    const goldenText = readFileSync(goldenPath, "utf8");
-    const golden = JSON.parse(goldenText);
+  test(`conformance: ${stem}`, () => {
+    const raw = readFileSync(inputPath, "utf8");
+    const input = isHtml ? raw : JSON.parse(raw);
+    const golden = JSON.parse(readFileSync(goldenPath, "utf8"));
 
     const actual = normalize(validate(input));
 
     assert.deepEqual(
       actual,
       golden,
-      `JS conformance drift on ${name}. ` +
+      `JS conformance drift on ${stem}. ` +
         "Regenerate goldens with `node scripts/regen-conformance.mjs` " +
         "after confirming both implementations agree.",
     );

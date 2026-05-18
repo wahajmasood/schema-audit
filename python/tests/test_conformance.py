@@ -48,10 +48,15 @@ def _discover_fixtures() -> list[tuple[str, Path, Path]]:
     out: list[tuple[str, Path, Path]] = []
     if not CORPUS_DIR.exists():
         return out
-    for input_path in sorted(CORPUS_DIR.glob("*.input.json")):
-        name = input_path.name[: -len(".input.json")]
-        golden_path = input_path.with_name(name + ".golden.json")
-        out.append((name, input_path, golden_path))
+    for input_path in sorted(CORPUS_DIR.iterdir()):
+        if input_path.name.endswith(".input.json"):
+            stem = input_path.name[: -len(".input.json")]
+        elif input_path.name.endswith(".input.html"):
+            stem = input_path.name[: -len(".input.html")]
+        else:
+            continue
+        golden_path = input_path.with_name(stem + ".golden.json")
+        out.append((stem, input_path, golden_path))
     return out
 
 
@@ -71,7 +76,11 @@ def test_corpus_is_non_empty():
     ids=[f[0] for f in FIXTURES],
 )
 def test_python_matches_golden(name: str, input_path: Path, golden_path: Path):
-    input_value = json.loads(input_path.read_text(encoding="utf-8"))
+    raw = input_path.read_text(encoding="utf-8")
+    if input_path.name.endswith(".input.html"):
+        input_value: object = raw
+    else:
+        input_value = json.loads(raw)
     golden = json.loads(golden_path.read_text(encoding="utf-8"))
 
     actual = _normalize(validate(input_value))

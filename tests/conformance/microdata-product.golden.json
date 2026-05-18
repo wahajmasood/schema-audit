@@ -1,0 +1,23 @@
+{
+  "errors": [],
+  "format": "microdata",
+  "info": [],
+  "registry": {
+    "curatedRulesVersion": "google-rich-results-docs-2026-05-16",
+    "schemaVersion": "schema.org-2026-05-16",
+    "snapshotAt": "<NORMALIZED>"
+  },
+  "types": [
+    "Product"
+  ],
+  "valid": true,
+  "warnings": [
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"audience\" is missing on type Product (Google Rich Results).",
+      "path": "Product.audience",
+      "type": "warning",
+      "value": null
+    }
+  ]
+}

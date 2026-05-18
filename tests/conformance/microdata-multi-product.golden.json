@@ -1,0 +1,116 @@
+{
+  "errors": [
+    {
+      "code": "MISSING_REQUIRED_PROPERTY",
+      "message": "Required property \"image\" is missing on type Product (Google Rich Results).",
+      "path": "Product[1].image",
+      "type": "error",
+      "value": null
+    },
+    {
+      "code": "MISSING_REQUIRED_PROPERTY",
+      "message": "Type Product requires at least one of: [offers, review, aggregateRating] (Google Rich Results).",
+      "path": "Product[1]",
+      "type": "error",
+      "value": null
+    }
+  ],
+  "format": "microdata",
+  "info": [],
+  "registry": {
+    "curatedRulesVersion": "google-rich-results-docs-2026-05-16",
+    "schemaVersion": "schema.org-2026-05-16",
+    "snapshotAt": "<NORMALIZED>"
+  },
+  "types": [
+    "Product",
+    "Product"
+  ],
+  "valid": false,
+  "warnings": [
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"brand\" is missing on type Product (Google Rich Results).",
+      "path": "Product[0].brand",
+      "type": "warning",
+      "value": null
+    },
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"sku\" is missing on type Product (Google Rich Results).",
+      "path": "Product[0].sku",
+      "type": "warning",
+      "value": null
+    },
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"gtin\" is missing on type Product (Google Rich Results).",
+      "path": "Product[0].gtin",
+      "type": "warning",
+      "value": null
+    },
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"description\" is missing on type Product (Google Rich Results).",
+      "path": "Product[0].description",
+      "type": "warning",
+      "value": null
+    },
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"mpn\" is missing on type Product (Google Rich Results).",
+      "path": "Product[0].mpn",
+      "type": "warning",
+      "value": null
+    },
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"audience\" is missing on type Product (Google Rich Results).",
+      "path": "Product[0].audience",
+      "type": "warning",
+      "value": null
+    },
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"brand\" is missing on type Product (Google Rich Results).",
+      "path": "Product[1].brand",
+      "type": "warning",
+      "value": null
+    },
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"sku\" is missing on type Product (Google Rich Results).",
+      "path": "Product[1].sku",
+      "type": "warning",
+      "value": null
+    },
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"gtin\" is missing on type Product (Google Rich Results).",
+      "path": "Product[1].gtin",
+      "type": "warning",
+      "value": null
+    },
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"description\" is missing on type Product (Google Rich Results).",
+      "path": "Product[1].description",
+      "type": "warning",
+      "value": null
+    },
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"mpn\" is missing on type Product (Google Rich Results).",
+      "path": "Product[1].mpn",
+      "type": "warning",
+      "value": null
+    },
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"audience\" is missing on type Product (Google Rich Results).",
+      "path": "Product[1].audience",
+      "type": "warning",
+      "value": null
+    }
+  ]
+}

@@ -63,23 +63,28 @@ function serialize(obj) {
 }
 
 // ─── 2. Python helper ──────────────────────────────────────────────
+//
+// `mode` is "json" (input is JSON, parse before validate) or "html"
+// (input is a raw HTML string, pass through verbatim).
 
-function pyValidate(inputJson) {
-  const py = spawnSync(
-    "python3",
-    [
-      "-c",
-      `import json, sys
+function pyValidate(rawText, mode) {
+  const script =
+    mode === "html"
+      ? `import json, sys
+sys.path.insert(0, ${JSON.stringify(PY_SRC)})
+from schema_audit import validate
+input_value = sys.stdin.read()
+print(json.dumps(validate(input_value)))`
+      : `import json, sys
 sys.path.insert(0, ${JSON.stringify(PY_SRC)})
 from schema_audit import validate
 input_value = json.loads(sys.stdin.read())
-print(json.dumps(validate(input_value)))`,
-    ],
-    {
-      input: inputJson,
-      encoding: "utf8",
-    },
-  );
+print(json.dumps(validate(input_value)))`;
+
+  const py = spawnSync("python3", ["-c", script], {
+    input: rawText,
+    encoding: "utf8",
+  });
   if (py.status !== 0) {
     console.error("python3 failed:", py.stderr);
     process.exit(1);
@@ -90,39 +95,40 @@ print(json.dumps(validate(input_value)))`,
 // ─── 3. Walk corpus ────────────────────────────────────────────────
 
 const inputs = readdirSync(CORPUS_DIR)
-  .filter((f) => f.endsWith(".input.json"))
+  .filter((f) => f.endsWith(".input.json") || f.endsWith(".input.html"))
   .sort();
 
 if (inputs.length === 0) {
-  console.error(`No .input.json files in ${CORPUS_DIR}`);
+  console.error(`No .input.json or .input.html files in ${CORPUS_DIR}`);
   process.exit(1);
 }
 
 let diverged = 0;
 for (const file of inputs) {
   const inputPath = resolve(CORPUS_DIR, file);
-  const goldenPath = inputPath.replace(/\.input\.json$/, ".golden.json");
-  const name = basename(file, ".input.json");
+  const isHtml = file.endsWith(".input.html");
+  const stem = isHtml ? basename(file, ".input.html") : basename(file, ".input.json");
+  const goldenPath = resolve(CORPUS_DIR, `${stem}.golden.json`);
 
   const rawText = readFileSync(inputPath, "utf8");
-  const inputValue = JSON.parse(rawText);
+  const jsInput = isHtml ? rawText : JSON.parse(rawText);
 
-  const jsOut = normalize(validate(inputValue));
-  const pyOut = normalize(pyValidate(rawText));
+  const jsOut = normalize(validate(jsInput));
+  const pyOut = normalize(pyValidate(rawText, isHtml ? "html" : "json"));
 
   const jsSerialized = serialize(jsOut);
   const pySerialized = serialize(pyOut);
 
   if (jsSerialized !== pySerialized) {
     diverged++;
-    console.error(`✗ ${name}: JS and Python disagree`);
+    console.error(`✗ ${stem}: JS and Python disagree`);
     console.error("  JS:", jsSerialized.slice(0, 500));
     console.error("  PY:", pySerialized.slice(0, 500));
     continue;
   }
 
   writeFileSync(goldenPath, jsSerialized);
-  console.log(`✓ ${name} (${jsOut.errors.length}E ${jsOut.warnings.length}W)`);
+  console.log(`✓ ${stem} (${jsOut.errors.length}E ${jsOut.warnings.length}W)`);
 }
 
 if (diverged > 0) {
