@@ -1,0 +1,27 @@
+{
+  "_comment": "Manually curated Layer 2 rules sourced from Google's Rich Results documentation. Constitution forbids auto-generation of this file. Updated weekly under the governance cadence. When in doubt between 'required' and 'recommended', default to recommended (warning). Properties already listed in requiredOneOf are NOT duplicated in recommended.",
+  "sourceVersion": "google-rich-results-docs-2026-05-16",
+  "snapshotAt": "2026-05-16T01:00:00Z",
+  "rules": {
+    "Product": {
+      "required": ["name", "image"],
+      "requiredOneOf": [["offers", "review", "aggregateRating"]],
+      "recommended": ["brand", "sku", "gtin", "description", "mpn", "audience"]
+    },
+    "Article": {
+      "required": [],
+      "requiredOneOf": [],
+      "recommended": ["headline", "image", "datePublished", "author", "dateModified", "publisher"]
+    },
+    "NewsArticle": {
+      "required": [],
+      "requiredOneOf": [],
+      "recommended": ["headline", "image", "datePublished", "author", "dateModified", "publisher", "dateline"]
+    },
+    "BlogPosting": {
+      "required": [],
+      "requiredOneOf": [],
+      "recommended": ["headline", "image", "datePublished", "author"]
+    }
+  }
+}
