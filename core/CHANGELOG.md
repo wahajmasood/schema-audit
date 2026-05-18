@@ -5,6 +5,73 @@ documented in this file. The format is based on [Keep a Changelog]
 (https://keepachangelog.com/en/1.1.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] — 2026-05-18
+
+SDD cycle `python-core`. First cross-language cycle. Ships the Python
+implementation of schema-audit alongside the JavaScript package, with
+identical output shape, identical error-code set, and a cross-language
+conformance corpus that enforces parity at test time.
+
+### Added
+
+- **Python package** at `python/` — stdlib-only (zero runtime deps),
+  Python 3.10+. Public API:
+  ```python
+  from schema_audit import validate, detect, VERSION, ErrorCode
+  validate(input, *, format="auto", strict=False) -> dict
+  ```
+  Returns a TypedDict-typed dict with the same shape JS emits.
+- **JSON-LD support in Python** — Layer 1 (schema.org structural) for
+  all 28 registered types + Layer 2 (Google Rich Results required +
+  recommended) for `Product`, `Article`, `NewsArticle`, `BlogPosting`.
+  Microdata, RDFa, and the Python CLI land in cycle 10.
+- **Cross-language conformance corpus** at `tests/conformance/` — 11
+  JSON-LD input fixtures paired with normalized golden outputs. Both
+  the JS suite (`core/tests/conformance.test.ts`) and the Python suite
+  (`python/tests/test_conformance.py`) assert against the same golden
+  files. Drift between the two runtimes becomes a test-enforced
+  invariant, not a documentation promise.
+- **Registry-sync test** (`core/tests/registry-sync.test.ts`) — fails
+  if `core/registry/schema-types.json` or `curated-rules.json` drifts
+  from the Python package's bundled copy at
+  `python/src/schema_audit/_data/`.
+- **`scripts/regen-conformance.mjs`** — regenerates golden outputs
+  from the JS validator and verifies Python agrees byte-for-byte
+  before committing. Use it after an intentional behavior change.
+- **`UNSUPPORTED_FORMAT` error code** (Python-only, cycle 9) — when
+  the Python `validate()` is asked to process Microdata or RDFa, it
+  returns a fully-structured result whose `errors[0].code` is
+  `UNSUPPORTED_FORMAT`. The JS package handles all three formats
+  natively; Python parity ships in cycle 10.
+
+### Changed
+
+- **`scripts/build-registry.mjs`** now writes to two locations
+  atomically: `core/registry/schema-types.json` AND
+  `python/src/schema_audit/_data/schema-types.json`. It also copies
+  the hand-maintained `core/registry/curated-rules.json` into the
+  Python `_data/` directory. Single source of truth, single command.
+- **JS package version** bumped to `0.8.0` to keep both packages on a
+  unified version line. No JS API changes in this release.
+- **Top-level `README.md`** — status block now reflects JS + Python
+  availability and the cycle-9/10 split for Python format support.
+
+### Implementation notes
+
+- Python and JS share the JSON registry files but have separate
+  source trees. The Python implementation is fully native — there is
+  no subprocess bridge, no FFI, no shared C extension. Each language
+  has the same code shape (`types.py` ↔ `types.ts`, `errors.py` ↔
+  `errors.ts`, etc.) for maintainability.
+- Same atomic-rule set, same per-item engine, same orchestrator
+  layering. Cycle 10's Python Microdata + RDFa orchestrators will
+  plug into the already-extracted `_per_item.validate_item()` exactly
+  the same way cycle 6/7 did on the JS side.
+- The Python `validate()` accepts `format` as a kwarg
+  (`validate(input, *, format="auto", strict=False)`) rather than the
+  JS-style options object — pythonic API, identical semantics.
+- Test counts: JS 233 → 244 (+11 conformance), Python 0 → 113.
+
 ## [0.7.0] — 2026-05-18
 
 SDD cycle `cli-wrapper`. Small DX cycle. Adds a thin command-line

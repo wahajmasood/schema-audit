@@ -7,10 +7,16 @@ and zero runtime dependencies. Drop it into any application that needs
 to validate structured data: page auditors, SEO platforms, CMSes,
 content monitors, AI agents.
 
-> **Status — pre-release (v0.7.0).** JavaScript-only. Three input
-> formats: JSON-LD, Microdata, and RDFa. Available as a library
-> (`import { validate } from "schema-audit"`) and as a CLI binary
-> (`schema-audit validate ./page.html`).
+> **Status — pre-release (v0.8.0).** JavaScript ships full coverage
+> (JSON-LD + Microdata + RDFa + CLI). **Python ships JSON-LD only**
+> this release — Microdata, RDFa, and the Python CLI land in the next
+> cycle. The output shape, error-code set, and verdicts are identical
+> across both runtimes; cross-language parity is enforced by a shared
+> conformance corpus (`tests/conformance/`).
+>
+> Available as a JS library (`import { validate } from "schema-audit"`),
+> a JS CLI binary (`schema-audit validate ./page.html`), and a Python
+> library (`from schema_audit import validate`).
 > Two-layer validation:
 > - **Layer 1** (schema.org structural) for 28 types — auto-synced
 >   from schema.org's canonical JSON-LD (`Thing`, `CreativeWork`,
@@ -30,12 +36,27 @@ content monitors, AI agents.
 
 ## Install
 
+JavaScript:
+
 ```bash
 npm install schema-audit
 ```
 
-Not yet published to npm; install from this repo's tarball once a
-release lands.
+Python:
+
+```bash
+pip install schema-audit
+```
+
+Neither package is on its public registry yet — install from this repo
+until v1.0:
+
+```bash
+# JS (from a local clone)
+cd schema-audit/core && npm install && npm run build
+# Python
+cd schema-audit/python && pip install .
+```
 
 ## CLI
 
@@ -64,6 +85,8 @@ Exit codes: `0` valid, `1` invalid (errors present, or warnings under
 
 ## Library usage
 
+JavaScript:
+
 ```js
 import { validate } from "schema-audit";
 
@@ -81,9 +104,26 @@ if (!result.valid) {
 }
 ```
 
+Python:
+
+```python
+from schema_audit import validate
+
+result = validate({
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Wireless Earbuds",
+    "url": "https://example.com/products/earbuds",
+})
+
+if not result["valid"]:
+    for err in result["errors"]:
+        print(f"{err['code']} at {err['path']}: {err['message']}")
+```
+
 `validate()` accepts either a raw JSON string or an already-parsed
-object, and always returns a synchronous result — never throws, never
-makes a network call.
+object/dict, and always returns a synchronous result — never throws,
+never makes a network call.
 
 ## Output shape
 
