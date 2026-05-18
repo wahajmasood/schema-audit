@@ -35,6 +35,9 @@ dev = [
   "mypy>=1.10",
 ]
 
+[project.scripts]
+schema-audit = "schema_audit.cli:cli_entry"
+
 [project.urls]
 Homepage = "https://github.com/wahajmasood/schema-audit"
 Source = "https://github.com/wahajmasood/schema-audit"
