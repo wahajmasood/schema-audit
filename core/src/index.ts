@@ -31,7 +31,7 @@ export type { ErrorCodeName } from "./errors.js";
 export { detect } from "./utils/detector.js";
 
 /** Package version. */
-export const VERSION = "0.8.0";
+export const VERSION = "0.9.0";
 
 const registry = loadRegistry();
 const curatedRules = loadCuratedRules();

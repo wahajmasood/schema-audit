@@ -7,16 +7,14 @@ and zero runtime dependencies. Drop it into any application that needs
 to validate structured data: page auditors, SEO platforms, CMSes,
 content monitors, AI agents.
 
-> **Status — pre-release (v0.8.0).** JavaScript ships full coverage
-> (JSON-LD + Microdata + RDFa + CLI). **Python ships JSON-LD only**
-> this release — Microdata, RDFa, and the Python CLI land in the next
-> cycle. The output shape, error-code set, and verdicts are identical
-> across both runtimes; cross-language parity is enforced by a shared
-> conformance corpus (`tests/conformance/`).
+> **Status — pre-release (v0.9.0).** **Full parity** between
+> JavaScript and Python. Both ship JSON-LD + Microdata + RDFa
+> validation, the same `schema-audit` CLI binary, and the same
+> output shape. The cross-language conformance corpus
+> (`tests/conformance/`) makes the parity a test-enforced invariant.
 >
-> Available as a JS library (`import { validate } from "schema-audit"`),
-> a JS CLI binary (`schema-audit validate ./page.html`), and a Python
-> library (`from schema_audit import validate`).
+> Available as a JS library, JS CLI binary, Python library, and
+> Python CLI binary — same surface area, same verdicts.
 > Two-layer validation:
 > - **Layer 1** (schema.org structural) for 28 types — auto-synced
 >   from schema.org's canonical JSON-LD (`Thing`, `CreativeWork`,

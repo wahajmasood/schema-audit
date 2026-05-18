@@ -5,6 +5,90 @@ documented in this file. The format is based on [Keep a Changelog]
 (https://keepachangelog.com/en/1.1.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] — 2026-05-18
+
+SDD cycle `python-formats-and-cli`. Completes Python's format coverage:
+Microdata, RDFa, and a Python CLI binary. The Python package now has
+full parity with JS — same three input formats, same CLI surface, same
+output shape. The cross-language conformance corpus is extended with
+HTML fixtures so the parity guarantee covers HTML inputs too.
+
+### Added (Python)
+
+- **Microdata orchestrator** (`python/src/schema_audit/validators/microdata.py`)
+  — ports the JS Microdata extractor + orchestrator pair, including
+  the multi-item path-prefix rule (`Product[0].name` when the same
+  type appears more than once, plain `Product.name` when unique).
+- **RDFa orchestrator** (`validators/rdfa.py`) — same top-down vocab
+  inheritance and `content=` override rules as JS. CURIE prefixes
+  emit `INVALID_ITEMTYPE` with the message JS uses verbatim.
+- **HTML parser wrapper** (`_html.py`) — minimal DOM tree built on
+  stdlib `html.parser.HTMLParser`. Lowercases tag + attribute names;
+  void elements self-close. Stays inside the constitution's
+  stdlib-only constraint (no `lxml`, no `beautifulsoup`).
+- **Microdata + RDFa extractors** (`_microdata_extractor.py`,
+  `_rdfa_extractor.py`) — near-line-by-line ports of the JS
+  extractors.
+- **Python CLI binary** (`cli.py` + `_render.py`) — `schema-audit`
+  command installed via `[project.scripts]`. Same surface as the JS
+  CLI: subcommands (`validate`, `detect`), flags (`--format`,
+  `--strict`, `--json`, `-h`, `-v`), exit codes (0/1/2). `main(*,
+  argv, stdin, stdout, stderr, read_file)` is a pure function with
+  injected I/O — subprocess-free testing, same shape as `runCli` on
+  the JS side.
+
+### Added (cross-language)
+
+- **4 HTML conformance fixtures** at `tests/conformance/`:
+  `microdata-product`, `microdata-multi-product`, `rdfa-product`,
+  `rdfa-no-vocab`. Each paired with a normalized golden output.
+  `scripts/regen-conformance.mjs` now reads both `*.input.json` and
+  `*.input.html` and refuses to write the golden unless JS + Python
+  produce byte-identical output.
+- **Microdata/RDFa fixtures** ported into `python/tests/fixtures/`
+  from `core/tests/fixtures/` — JS and Python integration suites
+  exercise the same HTML inputs.
+
+### Removed
+
+- **`ErrorCode.UNSUPPORTED_FORMAT`** (Python-only, added in v0.8.0
+  as a placeholder for "Python doesn't validate Microdata/RDFa yet").
+  The placeholder is no longer needed. The single `errors.py`
+  factory and its test file are gone. **Breaking for any v0.8.0
+  consumer that switched on this code** — but that surface was
+  always documented as cycle-9-only.
+
+### Changed
+
+- `validate(html_string)` and `validate(html_string,
+  format="microdata"/"rdfa")` now invoke the new orchestrators.
+- `python/README.md` strips the "JSON-LD only" caveat and documents
+  the CLI + the new format coverage.
+- Top-level `README.md` reflects full Python parity (JS + Python
+  both ship JSON-LD + Microdata + RDFa + CLI).
+- `scripts/regen-conformance.mjs` handles HTML inputs.
+- `core/tests/conformance.test.ts` + `python/tests/test_conformance.py`
+  iterate both file types.
+
+### Implementation notes
+
+- Python's stdlib `html.parser` is older than `parse5` (the JS dep)
+  and quirkier. The wrapper in `_html.py` papers over the worst of
+  it: tag/attr lowercasing, void-element self-closing, lenient
+  best-effort unwinding on mis-nested tags. The conformance corpus
+  is the canary for any deeper divergence.
+- `argparse` doesn't allow positionals to interleave with options
+  by default; `parse_intermixed_args()` does. Used here so
+  `schema-audit validate --strict file.json` parses the way Node's
+  `util.parseArgs` does.
+- Test counts: JS 244 → 248 (+4 HTML conformance). Python 113 → 173
+  (+11 microdata orchestrator, +12 rdfa, +7 html parser, +16 cli,
+  +6 render, +4 HTML conformance, –7 retired UNSUPPORTED_FORMAT
+  suite).
+- The Python source layout matches the JS layout 1:1, so cycle 11's
+  release-prep work (PyPI publish, CI matrix, version-bump
+  automation) treats the two packages symmetrically.
+
 ## [0.8.0] — 2026-05-18
 
 SDD cycle `python-core`. First cross-language cycle. Ships the Python
