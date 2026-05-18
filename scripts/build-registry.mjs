@@ -12,15 +12,23 @@
 //        - allProperties:  { propName: { valueTypes, definedOn } }
 //        - ownProperties:  [propName, ...]
 //   4. Writes the flattened registry to core/registry/schema-types.json
-//      so the JS package can bundle it.
+//      AND mirrors it to python/src/schema_audit/_data/schema-types.json
+//      so the Python package bundles byte-identical data.
+//   5. Mirrors the hand-maintained core/registry/curated-rules.json into
+//      the Python _data dir as well (cycle 9 — cross-language parity).
 //
 // Why pre-flatten at build time? Per constitution Design Tenet #4
 // ("Pre-index, don't recurse"), validation must do zero parent-walking
 // at runtime. All inheritance work lives here.
 //
+// Why mirror to Python? Constitution Principle #2: "Ship identical output
+// shape across JS and Python." The single source of truth lives in
+// core/registry/; this script keeps the Python bundle in lockstep so
+// the two implementations cannot drift on a verdict.
+//
 // Zero dependencies. Pure Node stdlib.
 
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, copyFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -28,6 +36,16 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, "..");
 const SOURCE = resolve(__dirname, "source-types.json");
 const OUTPUT = resolve(REPO_ROOT, "core", "registry", "schema-types.json");
+const PY_DATA_DIR = resolve(
+  REPO_ROOT,
+  "python",
+  "src",
+  "schema_audit",
+  "_data",
+);
+const PY_TYPES_OUTPUT = resolve(PY_DATA_DIR, "schema-types.json");
+const PY_CURATED_OUTPUT = resolve(PY_DATA_DIR, "curated-rules.json");
+const CURATED_SOURCE = resolve(REPO_ROOT, "core", "registry", "curated-rules.json");
 
 const source = JSON.parse(readFileSync(SOURCE, "utf8"));
 
@@ -93,7 +111,13 @@ const registry = {
 };
 
 mkdirSync(dirname(OUTPUT), { recursive: true });
-writeFileSync(OUTPUT, JSON.stringify(registry, null, 2) + "\n");
+const serialized = JSON.stringify(registry, null, 2) + "\n";
+writeFileSync(OUTPUT, serialized);
+
+// Mirror to Python package (cycle 9: cross-language parity).
+mkdirSync(PY_DATA_DIR, { recursive: true });
+writeFileSync(PY_TYPES_OUTPUT, serialized);
+copyFileSync(CURATED_SOURCE, PY_CURATED_OUTPUT);
 
 console.log(`✓ Registry built: ${OUTPUT}`);
 console.log(`  Schema version: ${registry.schemaVersion}`);
@@ -101,3 +125,5 @@ console.log(`  Snapshot:       ${registry.snapshotAt}`);
 console.log(
   `  Types:          ${Object.keys(types).length} (${Object.keys(types).join(", ")})`,
 );
+console.log(`✓ Python mirror:  ${PY_TYPES_OUTPUT}`);
+console.log(`✓ Python mirror:  ${PY_CURATED_OUTPUT}`);
