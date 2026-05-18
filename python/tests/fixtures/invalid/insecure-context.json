@@ -1,0 +1,5 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Product",
+  "name": "Insecure Context Widget"
+}

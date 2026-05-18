@@ -1,0 +1,7 @@
+{
+  "@context": "https://example.com/custom-vocab",
+  "@type": "Product",
+  "name": "Nonstandard Context Widget",
+  "image": "https://example.com/img/x.jpg",
+  "offers": "https://example.com/offers/x"
+}

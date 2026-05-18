@@ -1,0 +1,12 @@
+{
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "name": "Breaking Story",
+  "headline": "Major Tech Company Announces New Product",
+  "articleBody": "In a press conference today, executives announced a new product line.",
+  "datePublished": "2026-05-16",
+  "dateline": "NEW YORK",
+  "printSection": "Business",
+  "author": "https://example.com/people/john",
+  "publisher": "https://example.com/org/wire-service"
+}

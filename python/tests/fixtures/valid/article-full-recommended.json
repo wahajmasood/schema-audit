@@ -1,0 +1,11 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How Schema Validation Saves SEO",
+  "image": "https://example.com/img/article-hero.jpg",
+  "datePublished": "2026-05-16",
+  "dateModified": "2026-05-16",
+  "author": "https://example.com/people/jane",
+  "publisher": "https://example.com/org/example-news",
+  "articleBody": "Structured data is the gating mechanism for Rich Results."
+}

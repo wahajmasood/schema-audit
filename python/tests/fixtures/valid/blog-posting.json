@@ -1,0 +1,9 @@
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "name": "A Day in the Life",
+  "headline": "Thoughts on JSON-LD",
+  "articleBody": "Today I shipped a schema validator. The architecture absorbed six new types as pure data.",
+  "datePublished": "2026-05-16",
+  "author": "https://example.com/people/wahaj"
+}
