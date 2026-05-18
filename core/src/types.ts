@@ -77,10 +77,10 @@ export interface ValidationResult {
 export interface ValidateOptions {
   /**
    * The input format. "auto" detects from the input shape.
-   * Cycle 6 supports "jsonld" and "microdata". "auto" auto-detects.
-   * RDFa arrives in cycle 7.
+   * Cycle 7 supports "jsonld", "microdata", and "rdfa". "auto"
+   * auto-detects.
    */
-  format?: "auto" | "jsonld" | "microdata";
+  format?: "auto" | "jsonld" | "microdata" | "rdfa";
   /**
    * When true, warnings flip `valid` to false. Useful for strict pipelines
    * that want to fail on anything less than perfect markup. Default: false.

@@ -33,6 +33,8 @@ export const ErrorCode = {
   NO_ITEMSCOPE: "NO_ITEMSCOPE",
   MISSING_ITEMTYPE: "MISSING_ITEMTYPE",
   INVALID_ITEMTYPE: "INVALID_ITEMTYPE",
+  // RDFa extraction (added in 0.6.0)
+  NO_VOCAB: "NO_VOCAB",
 } as const;
 
 export type ErrorCodeName = (typeof ErrorCode)[keyof typeof ErrorCode];
@@ -234,5 +236,17 @@ export function invalidItemtype(value: unknown, reason: string): Issue {
     "",
     `Invalid itemtype: ${reason}`,
     value,
+  );
+}
+
+// ─── RDFa extraction factories (added in 0.6.0) ────────────────────────────
+
+export function noVocab(typeofValue: unknown): Issue {
+  return issue(
+    "error",
+    ErrorCode.NO_VOCAB,
+    "",
+    `Element has typeof="${String(typeofValue)}" but no ancestor [vocab] and typeof is not a fully-qualified schema.org URL. RDFa needs vocab to resolve a bare typeof.`,
+    typeofValue,
   );
 }
