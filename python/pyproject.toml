@@ -4,14 +4,26 @@ build-backend = "hatchling.build"
 
 [project]
 name = "schema-audit"
-description = "Programmatic schema-markup validation engine for JSON-LD, Microdata, and RDFa. Mirrors schema.org structural rules and Google Rich Results eligibility checks. Stdlib-only."
+description = "Schema-markup validation engine. Validates JSON-LD, Microdata, and RDFa against schema.org and Google Rich Results rules — same engine, same verdicts in JavaScript and Python."
 readme = "README.md"
 requires-python = ">=3.10"
-license = { file = "../LICENSE" }
-keywords = ["schema.org", "json-ld", "microdata", "rdfa", "structured-data", "seo", "validation", "rich-results"]
+license = { file = "LICENSE" }
+keywords = [
+  "schema.org",
+  "json-ld",
+  "microdata",
+  "rdfa",
+  "structured-data",
+  "seo",
+  "validation",
+  "rich-results",
+  "page-auditor",
+  "cms",
+  "cli",
+]
 authors = [{ name = "wahajmasood" }]
 classifiers = [
-  "Development Status :: 3 - Alpha",
+  "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Developers",
   "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
