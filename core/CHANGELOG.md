@@ -5,6 +5,71 @@ documented in this file. The format is based on [Keep a Changelog]
 (https://keepachangelog.com/en/1.1.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] — 2026-05-18
+
+SDD cycle `rdfa-validator`. Adds **RDFa** as the third input
+format. Smallest substantive cycle so far — the per-item engine
+(cycle 6's foundation refactor) and parse5 (cycle 6's runtime dep)
+absorbed RDFa with minimal additional surface area.
+
+### Added
+
+- **`core/src/utils/rdfa-extractor.ts`** — parses HTML via parse5
+  and extracts RDFa items. Top-down vocab inheritance: as we
+  recurse, we track the "current vocab" from ancestors. When we
+  hit a `[typeof]` element, we resolve the bare type name against
+  the inherited vocab. Fully-qualified schema.org URLs (e.g.,
+  `typeof="https://schema.org/Product"`) work without an ancestor
+  vocab.
+- **`core/src/validators/rdfa.ts`** — orchestrator. Same shape as
+  `microdata.ts`. Delegates per-item to `per-item.ts`. Multi-item
+  documents get `<Type>[<index>]` path prefixes.
+- **1 new error code**: `NO_VOCAB` (element has `typeof` but no
+  ancestor `[vocab]` and `typeof` isn't a fully-qualified schema.org
+  URL). Total codes: 15 → **16**.
+- **5 new HTML fixtures** plus 12 Given/When/Then scenarios in
+  `validate-rdfa.test.ts`, and 16 extractor unit tests.
+- **Corpus extension**: 2 new HTML samples (`rdfa-product.html`,
+  `rdfa-article.html`) with golden snapshots. Corpus: 20 → 22
+  samples.
+
+### Changed
+
+- **`ValidateOptions.format`** widens to
+  `"auto" | "jsonld" | "microdata" | "rdfa"`. All three formats
+  are now publicly supported via explicit `format` or auto-detect.
+- **`validate(input, options?)`** dispatches RDFa when the resolved
+  format is `"rdfa"`. Object inputs still always go to the JSON-LD
+  pipeline.
+
+### Test status
+
+- 179 → **209 / 209 pass** (+28 cycle-7 tests + 2 corpus snapshots).
+- Coverage on `core/src/`: ≥ 99%.
+
+### Bundle size
+
+- ESM: ~452 KB (essentially unchanged from cycle 6's 451 KB — the
+  new code is ~270 lines added).
+
+### What this does NOT do
+
+- **No CURIE prefix support** (`typeof="schema:Product"` with
+  `prefix="schema: https://schema.org/"`) — rare in practice for
+  schema.org markup. The validator emits `INVALID_ITEMTYPE` with
+  a message naming the limitation. Future cycle if real users ask.
+- **No `NONSTANDARD_VOCAB` warning** for non-schema.org vocab —
+  silently produces no items.
+- **No `jsonld-embedded` extraction** still — separate format, its
+  own future cycle.
+
+### Dependencies
+
+- **Runtime**: `parse5` ^7.0.0 (unchanged — same dep as cycle 6).
+- **Dev**: unchanged.
+
+[0.6.0]: https://github.com/wahajmasood/schema-audit/releases/tag/v0.6.0
+
 ## [0.5.0] — 2026-05-18
 
 SDD cycle `microdata-validator`. Adds **Microdata** as a second

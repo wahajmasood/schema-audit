@@ -7,8 +7,8 @@ and zero runtime dependencies. Drop it into any application that needs
 to validate structured data: page auditors, SEO platforms, CMSes,
 content monitors, AI agents.
 
-> **Status — pre-release (v0.5.0).** JavaScript-only. Two input
-> formats: JSON-LD and Microdata.
+> **Status — pre-release (v0.6.0).** JavaScript-only. Three input
+> formats: JSON-LD, Microdata, and RDFa.
 > Two-layer validation:
 > - **Layer 1** (schema.org structural) for 28 types — auto-synced
 >   from schema.org's canonical JSON-LD (`Thing`, `CreativeWork`,
@@ -114,7 +114,7 @@ No network calls. No subprocesses. No fetching remote `@context`s.
   diverse inputs (`npm run bench:corpus`) — currently 1.32 µs/op
   average; see `core/bench/BASELINE.md` for caveats
 - ✅ **Microdata** (HTML5 `itemscope`/`itemtype`/`itemprop`) — parsed via the one allowed runtime dep, `parse5`
-- ⛔ RDFa — cycle 7
+- ✅ **RDFa** (HTML `vocab`/`typeof`/`property`) — same parse5 pipeline; CURIE prefixes not yet supported
 - ⛔ Layer 2 for additional types (Person, Organization, Recipe, Event,
   LocalBusiness, JobPosting, …) — later cycles
 - ⛔ Offer / Review object-shape validation (e.g., `offers` must contain

@@ -1,6 +1,6 @@
 {
   "name": "schema-audit",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Zero-dependency schema markup validation engine. Validates JSON-LD, Microdata, and RDFa against schema.org and Google Rich Results rules.",
   "license": "MIT",
   "author": "wahajmasood",
