@@ -1,0 +1,66 @@
+{
+  "errors": [
+    {
+      "code": "UNKNOWN_PROPERTY",
+      "message": "Property \"totallyBogusProperty\" is not defined on type Product or any of its ancestors.",
+      "path": "Product.totallyBogusProperty",
+      "type": "error",
+      "value": "hello"
+    }
+  ],
+  "format": "jsonld",
+  "info": [],
+  "registry": {
+    "curatedRulesVersion": "google-rich-results-docs-2026-05-16",
+    "schemaVersion": "schema.org-2026-05-16",
+    "snapshotAt": "<NORMALIZED>"
+  },
+  "types": [
+    "Product"
+  ],
+  "valid": false,
+  "warnings": [
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"brand\" is missing on type Product (Google Rich Results).",
+      "path": "Product.brand",
+      "type": "warning",
+      "value": null
+    },
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"sku\" is missing on type Product (Google Rich Results).",
+      "path": "Product.sku",
+      "type": "warning",
+      "value": null
+    },
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"gtin\" is missing on type Product (Google Rich Results).",
+      "path": "Product.gtin",
+      "type": "warning",
+      "value": null
+    },
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"description\" is missing on type Product (Google Rich Results).",
+      "path": "Product.description",
+      "type": "warning",
+      "value": null
+    },
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"mpn\" is missing on type Product (Google Rich Results).",
+      "path": "Product.mpn",
+      "type": "warning",
+      "value": null
+    },
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"audience\" is missing on type Product (Google Rich Results).",
+      "path": "Product.audience",
+      "type": "warning",
+      "value": null
+    }
+  ]
+}

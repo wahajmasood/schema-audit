@@ -1,0 +1,13 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Wireless Earbuds",
+  "image": "https://example.com/earbuds.jpg",
+  "description": "Pro-grade earbuds",
+  "brand": { "@type": "Brand", "name": "Acme" },
+  "sku": "ACME-EB-01",
+  "gtin": "0123456789012",
+  "mpn": "MPN-EB-01",
+  "audience": { "@type": "Audience", "audienceType": "adults" },
+  "offers": "https://example.com/earbuds/buy"
+}

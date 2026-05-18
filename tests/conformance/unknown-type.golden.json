@@ -1,0 +1,21 @@
+{
+  "errors": [
+    {
+      "code": "UNKNOWN_TYPE",
+      "message": "@type \"Whatchamacallit\" is not a recognized schema.org type.",
+      "path": "@type",
+      "type": "error",
+      "value": "Whatchamacallit"
+    }
+  ],
+  "format": "jsonld",
+  "info": [],
+  "registry": {
+    "curatedRulesVersion": "google-rich-results-docs-2026-05-16",
+    "schemaVersion": "schema.org-2026-05-16",
+    "snapshotAt": "<NORMALIZED>"
+  },
+  "types": [],
+  "valid": false,
+  "warnings": []
+}

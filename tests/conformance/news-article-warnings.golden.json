@@ -1,0 +1,44 @@
+{
+  "errors": [],
+  "format": "jsonld",
+  "info": [],
+  "registry": {
+    "curatedRulesVersion": "google-rich-results-docs-2026-05-16",
+    "schemaVersion": "schema.org-2026-05-16",
+    "snapshotAt": "<NORMALIZED>"
+  },
+  "types": [
+    "NewsArticle"
+  ],
+  "valid": true,
+  "warnings": [
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"image\" is missing on type NewsArticle (Google Rich Results).",
+      "path": "NewsArticle.image",
+      "type": "warning",
+      "value": null
+    },
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"dateModified\" is missing on type NewsArticle (Google Rich Results).",
+      "path": "NewsArticle.dateModified",
+      "type": "warning",
+      "value": null
+    },
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"publisher\" is missing on type NewsArticle (Google Rich Results).",
+      "path": "NewsArticle.publisher",
+      "type": "warning",
+      "value": null
+    },
+    {
+      "code": "MISSING_RECOMMENDED_PROPERTY",
+      "message": "Recommended property \"dateline\" is missing on type NewsArticle (Google Rich Results).",
+      "path": "NewsArticle.dateline",
+      "type": "warning",
+      "value": null
+    }
+  ]
+}

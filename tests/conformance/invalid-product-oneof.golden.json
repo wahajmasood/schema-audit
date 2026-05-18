@@ -1,0 +1,23 @@
+{
+  "errors": [
+    {
+      "code": "MISSING_REQUIRED_PROPERTY",
+      "message": "Type Product requires at least one of: [offers, review, aggregateRating] (Google Rich Results).",
+      "path": "Product",
+      "type": "error",
+      "value": null
+    }
+  ],
+  "format": "jsonld",
+  "info": [],
+  "registry": {
+    "curatedRulesVersion": "google-rich-results-docs-2026-05-16",
+    "schemaVersion": "schema.org-2026-05-16",
+    "snapshotAt": "<NORMALIZED>"
+  },
+  "types": [
+    "Product"
+  ],
+  "valid": false,
+  "warnings": []
+}

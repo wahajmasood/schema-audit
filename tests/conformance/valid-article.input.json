@@ -1,0 +1,10 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "A Headline",
+  "author": { "@type": "Person", "name": "Jane Doe" },
+  "datePublished": "2026-05-01",
+  "image": "https://example.com/img.jpg",
+  "dateModified": "2026-05-02",
+  "publisher": { "@type": "Organization", "name": "Acme News" }
+}

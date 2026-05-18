@@ -1,0 +1,15 @@
+{
+  "errors": [],
+  "format": "jsonld",
+  "info": [],
+  "registry": {
+    "curatedRulesVersion": "google-rich-results-docs-2026-05-16",
+    "schemaVersion": "schema.org-2026-05-16",
+    "snapshotAt": "<NORMALIZED>"
+  },
+  "types": [
+    "Article"
+  ],
+  "valid": true,
+  "warnings": []
+}

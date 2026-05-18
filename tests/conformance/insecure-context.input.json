@@ -1,0 +1,7 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Product",
+  "name": "HTTP context",
+  "image": "https://example.com/i.jpg",
+  "offers": "https://example.com/o"
+}

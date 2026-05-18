@@ -1,0 +1,8 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Bad URL",
+  "image": "https://example.com/i.jpg",
+  "url": "not a url",
+  "offers": "https://example.com/o"
+}

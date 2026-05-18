@@ -1,0 +1,7 @@
+{
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "headline": "Press release",
+  "author": { "@type": "Organization", "name": "Acme PR" },
+  "datePublished": "2026-05-15"
+}

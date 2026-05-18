@@ -1,0 +1,6 @@
+{
+  "@type": "Product",
+  "name": "Orphan",
+  "image": "https://example.com/o.jpg",
+  "offers": "https://example.com/o/offer"
+}
