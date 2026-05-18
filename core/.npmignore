@@ -1,0 +1,5 @@
+# cycle 11 — exclude source maps from the published tarball.
+# Maps are 1.8 MB combined and most library consumers don't need
+# them. Keep them locally for dev (committed to git via the build
+# step's outDir, but never published).
+dist/*.map
