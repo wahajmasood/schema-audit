@@ -8,10 +8,9 @@ Callers should NEVER construct ``Issue`` dicts by hand — they should go
 through these factories so messages stay consistent and codes never
 drift between JS and Python.
 
-The set mirrors ``core/src/errors.ts`` 1:1 except for
-``UNSUPPORTED_FORMAT``, which is Python-only for cycle 9 (the
-JavaScript package already handles all three formats natively, so it
-has no equivalent code).
+The set mirrors ``core/src/errors.ts`` 1:1. (Cycle 9 carried a
+Python-only ``UNSUPPORTED_FORMAT`` code as a placeholder; cycle 10
+retired it once Python gained Microdata + RDFa support.)
 """
 
 from __future__ import annotations
@@ -30,7 +29,6 @@ class ErrorCode:
 
     PARSE_ERROR: Final = "PARSE_ERROR"
     UNKNOWN_FORMAT: Final = "UNKNOWN_FORMAT"
-    UNSUPPORTED_FORMAT: Final = "UNSUPPORTED_FORMAT"  # Python-only (cycle 9)
     MISSING_CONTEXT: Final = "MISSING_CONTEXT"
     INSECURE_CONTEXT: Final = "INSECURE_CONTEXT"
     NONSTANDARD_CONTEXT: Final = "NONSTANDARD_CONTEXT"
@@ -84,23 +82,6 @@ def unknown_format(value: object) -> Issue:
         "",
         "Could not auto-detect input format. Pass options.format explicitly.",
         value,
-    )
-
-
-def unsupported_format(requested: str) -> Issue:
-    """Python-only (cycle 9). Returned when ``format`` is ``"microdata"`` or
-    ``"rdfa"`` — the Python package validates JSON-LD only until cycle 10.
-    """
-    return _issue(
-        "error",
-        ErrorCode.UNSUPPORTED_FORMAT,
-        "",
-        (
-            f"Format '{requested}' is detected but not yet validated by the "
-            "Python package (JSON-LD only in v0.8.0). The JavaScript package "
-            "supports all three formats; Python parity ships in the next release."
-        ),
-        requested,
     )
 
 
@@ -259,4 +240,60 @@ def missing_recommended_property(type_name: str, property_name: str) -> Issue:
             f"{type_name} (Google Rich Results)."
         ),
         None,
+    )
+
+
+# ── Microdata extraction (added in cycle 10 for parity with JS cycle 6) ─────
+
+
+def no_itemscope(element_tag: str) -> Issue:
+    return _issue(
+        "error",
+        ErrorCode.NO_ITEMSCOPE,
+        "",
+        (
+            f"<{element_tag}> has an \"itemtype\" attribute but is missing "
+            '"itemscope". Microdata requires both on the same element.'
+        ),
+        None,
+    )
+
+
+def missing_itemtype() -> Issue:
+    return _issue(
+        "error",
+        ErrorCode.MISSING_ITEMTYPE,
+        "",
+        (
+            "Top-level [itemscope] element is missing an itemtype attribute. "
+            "Microdata requires itemtype to identify the schema.org type."
+        ),
+        None,
+    )
+
+
+def invalid_itemtype(value: object, reason: str) -> Issue:
+    return _issue(
+        "error",
+        ErrorCode.INVALID_ITEMTYPE,
+        "",
+        f"Invalid itemtype: {reason}",
+        value,
+    )
+
+
+# ── RDFa extraction (added in cycle 10 for parity with JS cycle 7) ──────────
+
+
+def no_vocab(typeof_value: object) -> Issue:
+    return _issue(
+        "error",
+        ErrorCode.NO_VOCAB,
+        "",
+        (
+            f'Element has typeof="{typeof_value}" but no ancestor [vocab] '
+            "and typeof is not a fully-qualified schema.org URL. RDFa needs "
+            "vocab to resolve a bare typeof."
+        ),
+        typeof_value,
     )
