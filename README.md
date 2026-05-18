@@ -7,8 +7,10 @@ and zero runtime dependencies. Drop it into any application that needs
 to validate structured data: page auditors, SEO platforms, CMSes,
 content monitors, AI agents.
 
-> **Status — pre-release (v0.6.0).** JavaScript-only. Three input
-> formats: JSON-LD, Microdata, and RDFa.
+> **Status — pre-release (v0.7.0).** JavaScript-only. Three input
+> formats: JSON-LD, Microdata, and RDFa. Available as a library
+> (`import { validate } from "schema-audit"`) and as a CLI binary
+> (`schema-audit validate ./page.html`).
 > Two-layer validation:
 > - **Layer 1** (schema.org structural) for 28 types — auto-synced
 >   from schema.org's canonical JSON-LD (`Thing`, `CreativeWork`,
@@ -32,10 +34,35 @@ content monitors, AI agents.
 npm install schema-audit
 ```
 
-Cycle 1 is not yet published to npm; install from this repo's tarball
-once a release lands.
+Not yet published to npm; install from this repo's tarball once a
+release lands.
 
-## Usage
+## CLI
+
+After install, the `schema-audit` binary is on your PATH:
+
+```bash
+# Validate a file (auto-detects format)
+schema-audit validate ./page.html
+schema-audit ./product.json              # validate is implicit
+
+# Pipe from stdin
+curl -s https://example.com/page | schema-audit
+
+# Just detect the format
+schema-audit detect ./page.html          # prints: microdata
+
+# JSON output for CI / tooling
+schema-audit validate --json ./page.html
+
+# Strict mode (warnings → exit 1)
+schema-audit validate --strict ./product.json
+```
+
+Exit codes: `0` valid, `1` invalid (errors present, or warnings under
+`--strict`), `2` usage error.
+
+## Library usage
 
 ```js
 import { validate } from "schema-audit";

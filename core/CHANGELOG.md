@@ -5,6 +5,83 @@ documented in this file. The format is based on [Keep a Changelog]
 (https://keepachangelog.com/en/1.1.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] — 2026-05-18
+
+SDD cycle `cli-wrapper`. Small DX cycle. Adds a thin command-line
+binary (`schema-audit`) that wraps the existing `validate()` and
+`detect()` functions. No new validator logic; no new runtime dep.
+
+### Added
+
+- **`schema-audit` binary** — installed when consumers run
+  `npm install schema-audit`. Surface:
+  ```
+  schema-audit [validate] [file] [options]
+  schema-audit detect [file]
+  schema-audit --version
+  schema-audit --help
+  ```
+  Input from a file path, `-` (stdin), or omitted (stdin).
+- **Flags**:
+  - `--format <fmt>` — override auto-detect
+    (`auto` | `jsonld` | `microdata` | `rdfa`)
+  - `--strict` — treat warnings as errors
+  - `--json` — full `ValidationResult` as JSON
+  - `-h` / `--help`, `-v` / `--version`
+- **Exit codes**: 0 valid, 1 invalid, 2 usage / read error.
+- **`core/src/cli.ts`** — `runCli({ argv, stdin, stdout, stderr,
+  readFile? }): Promise<number>`. Pure function with injected I/O,
+  testable without spawning child processes.
+- **`core/src/cli/render.ts`** — `renderHuman(result, opts)`
+  produces the human-readable output. Tested in isolation.
+- **`core/bin/schema-audit.js`** — ~10-line shebang launcher that
+  imports `runCli` from the built artifact.
+
+### Changed
+
+- **`tsup.config.ts`** — adds `src/cli.ts` as a second entry.
+  Produces `dist/cli.js` and `dist/cli.cjs` alongside the existing
+  `dist/index.*`.
+- **`core/package.json`**:
+  - `bin: { "schema-audit": "./bin/schema-audit.js" }`
+  - `files` includes `bin`
+  - `engines.node` raised from `>=18` to `>=18.4` (`util.parseArgs`
+    needs 18.4+)
+- **`core/src/index.ts`** — VERSION 0.6.0 → 0.7.0.
+
+### Test status
+
+- 209 → **231 / 231 pass** (+22 cycle-8 tests: 12 CLI scenarios +
+  6 render cases + a few coverage tests).
+- Coverage on `core/src/`: 99.84% lines, 94.26% branches, 98.20%
+  functions.
+
+### Bundle size
+
+- `dist/index.js` ~469 KB (up slightly from 452 KB — minor type
+  graph growth).
+- `dist/cli.js` ~474 KB (the CLI bundles its own copy of the
+  library; cycle 11 / release prep is the right time to deduplicate
+  via code splitting if needed).
+- Total package install size grows by parse5 + the CLI bundle.
+
+### What this does NOT do
+
+- **URL fetching** (`schema-audit validate https://example.com`) —
+  out of scope; would add `fetch` semantics, redirects, timeouts.
+- **Color output** — uncolored works everywhere; defer.
+- **Watch mode** (`--watch file.html`) — niche; defer.
+- **Glob patterns** (`schema-audit validate "pages/**/*.html"`) —
+  the shell expands globs; the CLI handles one input at a time.
+- **Configuration files** (`.schema-auditrc`) — not needed yet.
+
+### Dependencies
+
+- **Runtime**: `parse5` ^7.0.0 (unchanged).
+- **Dev**: unchanged.
+
+[0.7.0]: https://github.com/wahajmasood/schema-audit/releases/tag/v0.7.0
+
 ## [0.6.0] — 2026-05-18
 
 SDD cycle `rdfa-validator`. Adds **RDFa** as the third input

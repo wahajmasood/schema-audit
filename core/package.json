@@ -1,6 +1,6 @@
 {
   "name": "schema-audit",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Zero-dependency schema markup validation engine. Validates JSON-LD, Microdata, and RDFa against schema.org and Google Rich Results rules.",
   "license": "MIT",
   "author": "wahajmasood",
@@ -35,15 +35,19 @@
     },
     "./registry": "./registry/schema-types.json"
   },
+  "bin": {
+    "schema-audit": "./bin/schema-audit.js"
+  },
   "files": [
     "dist",
     "registry",
+    "bin",
     "LICENSE",
     "README.md",
     "CHANGELOG.md"
   ],
   "engines": {
-    "node": ">=18"
+    "node": ">=18.4"
   },
   "scripts": {
     "build": "tsup",
