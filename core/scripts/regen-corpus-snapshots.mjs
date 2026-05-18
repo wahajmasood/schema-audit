@@ -40,14 +40,18 @@ function normalize(result) {
 mkdirSync(SNAPSHOT_DIR, { recursive: true });
 
 const samples = readdirSync(CORPUS_DIR)
-  .filter((n) => n.endsWith(".json"))
+  .filter((n) => n.endsWith(".json") || n.endsWith(".html"))
   .sort();
+
+function slugOf(file) {
+  return file.replace(/\.(?:json|html)$/, "");
+}
 
 let changed = 0;
 let created = 0;
 
 for (const file of samples) {
-  const slug = basename(file, ".json");
+  const slug = slugOf(file);
   const inputPath = resolve(CORPUS_DIR, file);
   const snapshotPath = resolve(SNAPSHOT_DIR, `${slug}.snapshot.json`);
 
